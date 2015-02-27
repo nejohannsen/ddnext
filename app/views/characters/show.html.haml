@@ -1,0 +1,188 @@
+#page
+  = javascript_include_tag "character.js"
+  .main_page
+    .column
+      .abilities_and_stuff
+        .abilities
+          .str.ability
+            .title
+              STRENGTH
+            .value
+              = Character.ability_modifier(@character.ability_str)
+            .bonus
+              .text= @character.ability_str
+          .dex.ability
+            .title
+              DEXTERITY
+            .value
+              = Character.ability_modifier(@character.ability_dex)
+            .bonus
+              .text= @character.ability_dex
+          .con.ability
+            .title
+              CONSTITUTION
+            .value
+              = Character.ability_modifier(@character.ability_con)
+            .bonus
+              .text= @character.ability_con
+          .int.ability
+            .title
+              INTELLIGENCE
+            .value
+              = Character.ability_modifier(@character.ability_int)
+            .bonus
+              .text= @character.ability_int
+          .wis.ability
+            .title
+              WISDOM
+            .value
+              = Character.ability_modifier(@character.ability_wis)
+            .bonus
+              .text= @character.ability_wis
+          .cha.ability
+            .title
+              CHARISMA
+            .value
+              = Character.ability_modifier(@character.ability_cha)
+            .bonus
+              .text= @character.ability_cha
+        .random_grouping
+          .inspiration
+            .value
+              LB
+            .label
+              Inspiration
+          .proficiency_bonus
+            .value +2
+            .label Proficiency Bonus
+          .saves
+            .fields
+              .str.save
+                .proficiency 0
+                .value 2
+                .label Strength
+              .dex.save
+                .proficiency 0
+                .value 2
+                .label Dexterity
+              .con.save
+                .proficiency 0
+                .value 5
+                .label Consitiution
+              .int.save
+                .proficiency 0
+                .value -1
+                .label Intelligence
+              .wis.save
+                .proficiency 0
+                .value -1
+                .label Wisdom
+              .cha.save
+                .proficiency 0
+                .value 7
+                .label Charisma
+            .section_label Saving Throws
+          .skills
+            .fields
+              .acrobatics.skill
+                .proficiency 0
+                .value 7
+                .label Acrobatics (Dex)
+              .animal_handling.skill
+                .proficiency 0
+                .value 7
+                .label Animal Handling (Wis)
+              .arcana.skill
+                .proficiency 0
+                .value 7
+                .label Arcana (Int)
+              .athletics.skill
+                .proficiency 0
+                .value 7
+                .label Athletics (Str)
+              .deception.skill
+                .proficiency 0
+                .value 7
+                .label Deception (Cha)
+              .history.skill
+                .proficiency 0
+                .value 7
+                .label History (Int)
+              .insight.skill
+                .proficiency 0
+                .value 7
+                .label Insight (Wis)
+              .intimidation.skill
+                .proficiency 0
+                .value 7
+                .label Intimidation (Cha)
+              .investigation.skill
+                .proficiency 0
+                .value 7
+                .label Investigation (Int)
+              .medicine.skill
+                .proficiency 0
+                .value 7
+                .label Medicine (Wis)
+              .nature.skill
+                .proficiency 0
+                .value 7
+                .label Nature (Int)
+              .percepion.skill
+                .proficiency 0
+                .value 7
+                .label Percepion (Wis)
+              .performance.skill
+                .proficiency 0
+                .value 7
+                .label Performance (Cha)
+              .persuasion.skill
+                .proficiency 0
+                .value 7
+                .label Persuasion (Cha)
+              .religion.skill
+                .proficiency 0
+                .value 7
+                .label Religion (Int)
+              .sleight_of_hand.skill
+                .proficiency 0
+                .value 7
+                .label Sleight of Hand (Dex)
+              .stealth.skill
+                .proficiency 0
+                .value 7
+                .label Stealth (Dex)
+              .survival.skill
+                .proficiency 0
+                .value 7
+                .label Survival (Wis)
+            .section_label Skills
+        .temp
+          .passive_perception
+            .value 17
+            .label Passive Wisdom (Perception)
+        .proficencies_and_languages
+          .value
+          .section_label Other Proficencies and languages
+    .column
+      .ac_hp_speed
+        .armor_class
+          .value 13
+          .label Armor Class
+        .initative
+          .value +3
+          .label Initative
+        .speed
+          .value 30
+          .label Speed
+        .current_hp
+          .max_hp
+            .label Hit Point Maximum
+            .value 30
+          .blank_area
+          .section_label Current Hit Points
+        .temp_hp
+          .blank_area
+          .section_label Temporary Hit Points
+        .hit-dice
+        .death_saves

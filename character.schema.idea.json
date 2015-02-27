@@ -1,0 +1,65 @@
+{
+  "character:"
+  {
+    "name": "Rat",
+    "classes":
+    {
+      "rogue": "4",
+    }
+    "faction": "Harpers",
+    "race": "Human",
+    "aliginment": "Chaotic Good",
+    "experince": "2700",
+    "abilities":
+    {
+      "str": {"score": "14", "bonus": "1", "init": "13", "adjustments": ["+1 for human"] },
+      "dex": {"score": "16", "bonus": "2", "init": "15", "adjustments": ["+1 for human"] },
+      "con": {"score": "11", "bonus": "0", "init": "10", "adjustments": ["+1 for human"] },
+      "int": {"score": "15", "bonus": "1", "init": "14", "adjustments": ["+1 for human"] },
+      "wis": {"score": "11", "bonus": "0", "init": "10", "adjustments": ["+1 for human"] },
+      "cha": {"score": "11", "bonus": "0", "init": "10", "adjustments": ["+1 for human"] },
+    },
+    "proficency_bonus": "2",
+    "inspriation": "0",
+    "armour_class": {"value": "14", "dex": "+2", "armor": {"type": "leather", "bonus": "+2"}
+    "initative" "+2",
+    "speed": {"ground": "30", "water": "15", "Climb": "15"
+    "hit_points": "integer",
+    "hit_dice": "string",
+    "saving_thows":
+    {
+      "str": {"score": "integer", "proficient": "boolean" },
+      "dex": {"score": "integer", "proficient": "boolean" },
+      "con": {"score": "integer", "proficient": "boolean" },
+      "int": {"score": "integer", "proficient": "boolean" },
+      "wis": {"score": "integer", "proficient": "boolean" },
+      "cha": {"score": "integer", "proficient": "boolean" },
+    },
+    "skills":
+    {
+      "acrobatics":         {"score": "3", "proficient": "true" },
+      "animal_handling":    {"score": "0", "proficient": "false" }
+    },
+    "passive_perception": "10",
+    "phyical_attributes":
+    {
+      "age": "23"
+      "height_in_inches": "68"
+      "weight_in_pounds": "160"
+      "eye_color": "blue"
+      "hair_color": "brown"
+      "skin_color": "white"
+      "general_description": "A dircription of Rat"
+    },
+    "personality_traits": ["Here is some information on a personailty train of rat the rogue", "This is his 2nd personailty train"],
+    "ideals": ["Some ideals of Rat..."],
+    "bonds": ["These are rats' bonds. This are what motivates Rat"],
+    "flaws": ["Rat does not have flaws. Just charactisics that seem troubling to to others. "]
+
+  },
+  "player":
+  {
+    "name": "Nick"
+    "dci_number": "738459850"
+  }
+}

@@ -1,4 +1,8 @@
 Ddnext::Application.routes.draw do
+  resources :game_classes
+  resources :races
+  resources :subraces
+  resources :characters
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

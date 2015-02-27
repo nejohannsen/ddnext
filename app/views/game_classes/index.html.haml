@@ -1,0 +1,11 @@
+%h1 All Classes
+=link_to "Create New Class", new_game_class_path()
+- unless @classes.empty?
+  %table
+    %tr
+      %th Class
+      %th Actions
+    - @classes.each do |gclass|
+      %tr
+        %td= gclass.title
+        %td= " #{link_to 'View', gclass} | #{link_to 'Edit', edit_game_class_path(gclass)}".html_safe

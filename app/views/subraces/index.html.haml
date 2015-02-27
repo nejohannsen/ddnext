@@ -1,0 +1,11 @@
+%h1 All Subraces
+=link_to "Create New Subrace", new_subrace_path()
+- unless @subraces.empty?
+  %table
+    %tr
+      %th Subrace
+      %th Actions
+    - @subraces.each do |subrace|
+      %tr
+        %td= subrace.title
+        %td= " #{link_to 'View', subrace} | #{link_to 'Edit', edit_subrace_path(subrace)}".html_safe
