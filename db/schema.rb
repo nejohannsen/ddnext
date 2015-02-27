@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150227034150) do
+ActiveRecord::Schema.define(version: 20150227040956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "character_classes", force: true do |t|
+    t.integer  "character_id"
+    t.integer  "game_class_id"
+    t.integer  "character_level"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "character_classes", ["character_id"], name: "index_character_classes_on_character_id", using: :btree
+  add_index "character_classes", ["game_class_id"], name: "index_character_classes_on_game_class_id", using: :btree
 
   create_table "characters", force: true do |t|
     t.datetime "created_at"

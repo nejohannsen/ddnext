@@ -1,0 +1,13 @@
+%h1 All Character Classes (This view will go away in time)
+=link_to "Create New Character Clas", new_character_class_path()
+- unless @char_classes.empty?
+  %table
+    %tr
+      %th Character
+      %th Class
+      %th Actions
+    - @char_classes.each do |char_class|
+      %tr
+        %td= char_class.character.name
+        %td= char_class.game_class.title
+        %td= " #{link_to 'View', char_class} | #{link_to 'Edit', edit_character_class_path(char_class)}".html_safe
