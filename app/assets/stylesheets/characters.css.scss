@@ -1,6 +1,30 @@
 // Place all the styles related to the characters controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.popup_form {
+  overflow: hidden;
+  background-color: gray;
+  z-index: 10;
+  position: absolute;
+  top: 125px;
+  left: 300px;
+  width: 850px;
+  height: 700px;
+  .pct70 {
+    float: left;
+    width: 65%;
+    /* Temp */
+    border: 1px solid black;
+    /********/
+    height: 100%;
+  }
+  .pct30 {
+    float:left;
+    width: 34%;
+    border: 1px solid red;
+    height: 100%;
+  }
+}
 .main_title {
   background-color: #ccc;
   height: 120px;

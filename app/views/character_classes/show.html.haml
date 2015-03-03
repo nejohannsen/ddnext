@@ -1,1 +1,2 @@
 %h1= "#{@char_class.character.name} to a level in #{@char_class.game_class.title} at character level #{@char_class.character_level}"
+= link_to 'Remove this level and class', character_class_path(@char_class.id), :confirm => 'Are you sure?', :method => :delete 

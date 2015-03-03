@@ -1,29 +1,32 @@
 class Character < ActiveRecord::Base
+  
+  has_many :character_classes, after_add: :set_classes_and_levels
+  has_many :game_classes, through: :character_classes
 
   def self.ability_modifier(ability_score)
-    case ability_score
-    when 0..1
-      return -5
+    return case ability_score
+    when 0..1 
+       -5
     when 2..3
-      return -4
+       -4
     when 4..5
-      return -3
+       -3
     when 6..7
-      return -2
+       -2
     when 8..9
-      return -1
+       -1
     when 10..11
-      return 0
+       0
     when 12..13
-      return 1
+       1
     when 14..15
-      return 2
+       2
     when 16..17
-      return 3
+       3
     when 18..19
-      return 4
+       4
     when 20..21
-      return 5
+       5
     else
       return 'error'
     end
@@ -31,6 +34,21 @@ class Character < ActiveRecord::Base
 
   def self.passive_skill(skill_value)
     return 10 + skill_value
+  end
+
+  private
+
+  def set_classes_and_levels(character_class)
+    character = character_class.character
+    simple_hash = {}
+    character.character_classes.each do |cc|
+      simple_hash[cc.game_class.title] = simple_hash[cc.game_class.title].nil? ? 1 : simple_hash[cc.game_class.title] += 1
+    end
+    string = ""
+    simple_hash.each do |key,value|
+      string +=  string.blank? ? "#{key} #{value}" : " / #{key} #{value}"
+    end
+    character.update_attribute('classes_and_levels', string)
   end
 
 end

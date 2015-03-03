@@ -1,5 +1,5 @@
 #page
-  = javascript_include_tag "character.js"
+#temp_page
   .main_page
     .column
       .abilities_and_stuff
@@ -186,3 +186,19 @@
           .section_label Temporary Hit Points
         .hit-dice
         .death_saves
+  .temp_form
+    = form_for @character do |f|
+      = fields_for :character_class do |cc|
+        = cc.label :game_class
+        = cc.select(:game_class, options_from_collection_for_select(GameClass.all, :id, :title))
+      = f.submit
+
+
+= javascript_include_tag "character.js"
+#baked_in_javascript
+  :javascript
+    var baked = {
+      character: #{@character.to_json},
+      avaliable_classes: #{@avaliable_classes.to_json},
+      character_classes: #{@character_classes.to_json}
+    }

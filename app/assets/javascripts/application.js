@@ -12,4 +12,4 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require react.min.js
+//= require react.js
