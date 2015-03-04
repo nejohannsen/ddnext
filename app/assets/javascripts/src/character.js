@@ -196,9 +196,9 @@ var AddClassesForm = React.createClass({
 });
 
 $( document ).ready(function() {
-  var url = "http://localhost:3000/characters/" + baked.character.id
+  debugger
   React.render(
-    <FullPage character={baked.character} avaliable_classes={baked.avaliable_classes} character_classes={baked.character_classes} url={url} />,
+    <FullPage character={baked.character} avaliable_classes={baked.avaliable_classes} character_classes={baked.character_classes} url={baked.url} />,
     document.getElementById('page')
   );
 });
