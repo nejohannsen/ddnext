@@ -196,7 +196,6 @@ var AddClassesForm = React.createClass({displayName: "AddClassesForm",
 });
 
 $( document ).ready(function() {
-  debugger
   React.render(
     React.createElement(FullPage, {character: baked.character, avaliable_classes: baked.avaliable_classes, character_classes: baked.character_classes, url: baked.url}),
     document.getElementById('page')
