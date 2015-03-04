@@ -24,6 +24,7 @@ var FullPage = React.createClass({displayName: "FullPage",
     });
   },
   changeStateOfPopupForm: function(formName) {
+    debugger
     var formVisable = this.state.form_visable
     formVisable[formName] = !formVisable[formName]
     this.setState({form_visable: formVisable})
@@ -54,8 +55,7 @@ var FullPage = React.createClass({displayName: "FullPage",
           React.createElement(AddClassesForm, {
             addClassToCharacter: this.addClassToCharacter, 
             avaliable_classes: this.state.avaliable_classes, 
-            character_classes: this.state.character_classes, 
-            changeStateOfPopupForm: this.changeStateOfPopupForm}
+            character_classes: this.state.character_classes}
           )
         ) : (null)
 
@@ -88,7 +88,8 @@ var LeftTitleBox = React.createClass({displayName: "LeftTitleBox",
 
 var RightTitleBox = React.createClass({displayName: "RightTitleBox",
   handlePopupForm: function(e) {
-    this.props.changeStateOfPopupForm(e.target.getAttribute('value'))
+    debugger
+    this.props.changeStateOfPopupForm(e.target.getAttribute('ref'))
   },
   render: function() {
     return (
@@ -162,9 +163,6 @@ var ClassAndLevelList = React.createClass({displayName: "ClassAndLevelList",
 });
 
 var AddClassesForm = React.createClass({displayName: "AddClassesForm",
-  handelClick: function() {
-    this.props.changeStateOfPopupForm('class_and_level')
-  },
   render: function() {
     var props = this.props;
     var characterClassNodes = this.props.character_classes.map(function (cclass) {
@@ -181,7 +179,6 @@ var AddClassesForm = React.createClass({displayName: "AddClassesForm",
 
     return (
       React.createElement("div", {id: "class_and_level", className: "popup_form"}, 
-        React.createElement("input", {type: "submit", value: "done", onClick: this.handelClick}), 
         React.createElement("div", {className: "pct70"}, 
           optionNodes
         ), 

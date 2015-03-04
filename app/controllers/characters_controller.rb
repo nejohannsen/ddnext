@@ -18,7 +18,6 @@ class CharactersController < ApplicationController
   end
 
   def update
-
     @char = Character.find(params[:id])
     if params[:character_class].present?
       respond_to do |format|

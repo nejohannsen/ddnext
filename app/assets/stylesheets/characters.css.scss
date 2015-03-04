@@ -17,12 +17,21 @@
     border: 1px solid black;
     /********/
     height: 100%;
+    .addClassForm {
+      border: 1px solid green;
+      float: left;
+      width: 100px;
+      height: 100px;
+      text-align: center;
+    }
   }
   .pct30 {
+    overflow: hidden;
     float:left;
     width: 34%;
     border: 1px solid red;
     height: 100%;
+
   }
 }
 .main_title {

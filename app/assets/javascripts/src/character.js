@@ -1,6 +1,12 @@
 var FullPage = React.createClass({
   getInitialState: function() {
-    return {url: this.props.url, character: this.props.character, avaliable_classes: this.props.avaliable_classes, character_classes: this.props.character_classes};
+    return {
+      url: this.props.url, 
+      character: this.props.character, 
+      avaliable_classes: this.props.avaliable_classes, 
+      character_classes: this.props.character_classes,
+      form_visable: {class_and_level: false}
+    };
   },
   addClassToCharacter: function(gclass) {
     $.ajax({
@@ -17,6 +23,11 @@ var FullPage = React.createClass({
       }.bind(this)
     });
   },
+  changeStateOfPopupForm: function(formName) {
+    var formVisable = this.state.form_visable
+    formVisable[formName] = !formVisable[formName]
+    this.setState({form_visable: formVisable})
+  },
   loadCharacterFromServer: function() {
     $.ajax({
       url: this.props.url,
@@ -32,9 +43,22 @@ var FullPage = React.createClass({
   render: function() {
     return (
       <div id="FullPage">
-        <MainTitle  addClassToCharacter={this.addClassToCharacter} character={this.state.character}/>
+        <MainTitle
+          addClassToCharacter={this.addClassToCharacter}
+          character={this.state.character}
+          changeStateOfPopupForm={this.changeStateOfPopupForm}
+        />
         <MainPage />
-        <AddClassesForm addClassToCharacter={this.addClassToCharacter} avaliable_classes={this.state.avaliable_classes} character_classes={this.state.character_classes}  />
+
+        {this.state.form_visable["class_and_level"] ? (
+          <AddClassesForm 
+            addClassToCharacter={this.addClassToCharacter} 
+            avaliable_classes={this.state.avaliable_classes} 
+            character_classes={this.state.character_classes} 
+            changeStateOfPopupForm={this.changeStateOfPopupForm}
+          />
+        ) : (null)}
+
       </div>
     );
   }
@@ -45,7 +69,7 @@ var MainTitle = React.createClass({
     return (
       <div className="main_title">
         <LeftTitleBox character={this.props.character} />
-        <RightTitleBox character={this.props.character} />
+        <RightTitleBox character={this.props.character} changeStateOfPopupForm={this.props.changeStateOfPopupForm} />
       </div>
     );
   }
@@ -63,12 +87,15 @@ var LeftTitleBox = React.createClass({
 });
 
 var RightTitleBox = React.createClass({
+  handlePopupForm: function(e) {
+    this.props.changeStateOfPopupForm(e.target.getAttribute('value'))
+  },
   render: function() {
     return (
       <div className="right_title_box">
-        <div className="field">
-          <div className="value">{this.props.character.classes_and_levels}</div>
-          <div className="label">Class and Level</div>
+        <div value="class_and_level" className="field" onClick={this.handlePopupForm}>
+          <div value="class_and_level" className="value">{this.props.character.classes_and_levels}</div>
+          <div value="class_and_level" className="label">Class and Level</div>
         </div>
         <div className="field">
           <div className="value">Background</div>
@@ -112,9 +139,16 @@ var MainPage = React.createClass({
 });
 
 var ClassOptions = React.createClass({
+  handleSubmit: function(e) {
+    e.preventDefault();
+    this.props.addClassToCharacter({character_class: {game_class: e.target.getAttribute('value') }});
+  },
   render: function() {
     return (
-      <option value={this.props.id}>{this.props.title}</option>
+      <form className="addClassForm" onSubmit={this.handleSubmit} value={this.props.id} >
+        <h2>{this.props.title}</h2>
+        <input type="submit" value="Add" />
+      </form>
     );
   }
 });
@@ -128,12 +162,11 @@ var ClassAndLevelList = React.createClass({
 });
 
 var AddClassesForm = React.createClass({
-  handleSubmit: function(e) {
-    e.preventDefault();
-    var selectValue = this.refs.selectedClass.getDOMNode().value
-    this.props.addClassToCharacter({character_class: {game_class: selectValue}});
+  handelClick: function() {
+    this.props.changeStateOfPopupForm('class_and_level')
   },
   render: function() {
+    var props = this.props;
     var characterClassNodes = this.props.character_classes.map(function (cclass) {
       return (
         <ClassAndLevelList id={cclass.id} class_id={cclass.game_class_id} title={cclass.gclass_title} level={cclass.character_level} />
@@ -142,20 +175,15 @@ var AddClassesForm = React.createClass({
 
     var optionNodes = this.props.avaliable_classes.map(function (gclass) {
       return (
-        <ClassOptions id={gclass.id} title={gclass.title} />
+        <ClassOptions id={gclass.id} title={gclass.title}  addClassToCharacter={this.props.addClassToCharacter} />
       );
-    });
+    }, this );
 
     return (
-      <div className='popup_form'>
+      <div id="class_and_level" className='popup_form'>
+        <input type='submit' value='done' onClick={this.handelClick} />
         <div className='pct70'>
-          <form id="addClassForm" onSubmit={this.handleSubmit}>
-            <label>Class</label>
-            <select ref='selectedClass'>
-              {optionNodes}
-            </select>
-            <input type="submit" value="Submit" />
-          </form>
+          {optionNodes}
         </div>
         <div className='pct30'>
           <ul>

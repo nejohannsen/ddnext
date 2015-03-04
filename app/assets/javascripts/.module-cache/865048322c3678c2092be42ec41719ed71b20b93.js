@@ -26,7 +26,7 @@ var FullPage = React.createClass({displayName: "FullPage",
   changeStateOfPopupForm: function(formName) {
     var formVisable = this.state.form_visable
     formVisable[formName] = !formVisable[formName]
-    this.setState({form_visable: formVisable})
+    setState({form_visable: formVisable})
   },
   loadCharacterFromServer: function() {
     $.ajax({
@@ -54,8 +54,7 @@ var FullPage = React.createClass({displayName: "FullPage",
           React.createElement(AddClassesForm, {
             addClassToCharacter: this.addClassToCharacter, 
             avaliable_classes: this.state.avaliable_classes, 
-            character_classes: this.state.character_classes, 
-            changeStateOfPopupForm: this.changeStateOfPopupForm}
+            character_classes: this.state.character_classes}
           )
         ) : (null)
 
@@ -69,7 +68,7 @@ var MainTitle = React.createClass({displayName: "MainTitle",
     return (
       React.createElement("div", {className: "main_title"}, 
         React.createElement(LeftTitleBox, {character: this.props.character}), 
-        React.createElement(RightTitleBox, {character: this.props.character, changeStateOfPopupForm: this.props.changeStateOfPopupForm})
+        React.createElement(RightTitleBox, {character: this.props.character})
       )
     );
   }
@@ -88,14 +87,14 @@ var LeftTitleBox = React.createClass({displayName: "LeftTitleBox",
 
 var RightTitleBox = React.createClass({displayName: "RightTitleBox",
   handlePopupForm: function(e) {
-    this.props.changeStateOfPopupForm(e.target.getAttribute('value'))
+    changeStateOfPopupForm()
   },
   render: function() {
     return (
       React.createElement("div", {className: "right_title_box"}, 
-        React.createElement("div", {value: "class_and_level", className: "field", onClick: this.handlePopupForm}, 
-          React.createElement("div", {value: "class_and_level", className: "value"}, this.props.character.classes_and_levels), 
-          React.createElement("div", {value: "class_and_level", className: "label"}, "Class and Level")
+        React.createElement("div", {className: "field", ref: "class_and_level", onClick: this.handlePopupForm}, 
+          React.createElement("div", {className: "value"}, this.props.character.classes_and_levels), 
+          React.createElement("div", {className: "label"}, "Class and Level")
         ), 
         React.createElement("div", {className: "field"}, 
           React.createElement("div", {className: "value"}, "Background"), 
@@ -162,9 +161,6 @@ var ClassAndLevelList = React.createClass({displayName: "ClassAndLevelList",
 });
 
 var AddClassesForm = React.createClass({displayName: "AddClassesForm",
-  handelClick: function() {
-    this.props.changeStateOfPopupForm('class_and_level')
-  },
   render: function() {
     var props = this.props;
     var characterClassNodes = this.props.character_classes.map(function (cclass) {
@@ -181,7 +177,6 @@ var AddClassesForm = React.createClass({displayName: "AddClassesForm",
 
     return (
       React.createElement("div", {id: "class_and_level", className: "popup_form"}, 
-        React.createElement("input", {type: "submit", value: "done", onClick: this.handelClick}), 
         React.createElement("div", {className: "pct70"}, 
           optionNodes
         ), 

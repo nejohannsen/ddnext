@@ -24,6 +24,7 @@ var FullPage = React.createClass({displayName: "FullPage",
     });
   },
   changeStateOfPopupForm: function(formName) {
+    debugger
     var formVisable = this.state.form_visable
     formVisable[formName] = !formVisable[formName]
     this.setState({form_visable: formVisable})
@@ -88,6 +89,7 @@ var LeftTitleBox = React.createClass({displayName: "LeftTitleBox",
 
 var RightTitleBox = React.createClass({displayName: "RightTitleBox",
   handlePopupForm: function(e) {
+    debugger
     this.props.changeStateOfPopupForm(e.target.getAttribute('value'))
   },
   render: function() {
