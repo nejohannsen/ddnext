@@ -13,8 +13,9 @@ class CharactersController < ApplicationController
     @character_classes = CharacterClass.where(character_id: params[:id])
   end
 
-  def edit
-
+  def create
+    char = Character.create()
+    redirect_to char
   end
 
   def update
