@@ -34,7 +34,6 @@ class CharactersController < ApplicationController
       if @char.update_attributes(params[:character])
         respond_to do |format|
           format.html {redirect_to @char, notice: "Updated character"}
-          debugger
           format.js { @char.to_json }
         end
        else
