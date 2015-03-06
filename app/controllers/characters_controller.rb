@@ -32,11 +32,12 @@ class CharactersController < ApplicationController
         end
       end
     else
-      if @char.update_attributes(params[:character])
+      if @char.update_attributes(character_params)
         respond_to do |format|
+          @responce = {character: @char}
           format.html {redirect_to @char, notice: "Updated character"}
           debugger
-          format.json { render json: {character: @char}, status: :updated, location: @char }
+          format.json { render json: @responce, status: :created, location: @responce }
         end
        else
          respond_to do |format|
@@ -50,4 +51,7 @@ class CharactersController < ApplicationController
 
     end
   end
+   def character_params
+     params.require(:character).permit!
+   end
 end

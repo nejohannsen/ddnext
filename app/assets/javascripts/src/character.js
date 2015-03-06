@@ -32,12 +32,13 @@ var FullPage = React.createClass({
     $.ajax({
       url: this.props.url,
       dataType: 'json',        
+      type: 'PATCH',
       data: {'character': this.state.character},
       success: function(data) {
         this.setState({character: data["character"]});
       }.bind(this),
       error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
+       /* console.error(this.props.url, status, err.toString());*/
       }.bind(this)             
     });                        
   },

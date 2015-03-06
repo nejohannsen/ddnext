@@ -32,7 +32,6 @@ var FullPage = React.createClass({displayName: "FullPage",
     $.ajax({
       url: this.props.url,
       dataType: 'json',        
-      type: 'PATCH',
       data: {'character': this.state.character},
       success: function(data) {
         this.setState({character: data["character"]});
