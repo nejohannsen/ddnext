@@ -32,7 +32,7 @@ var FullPage = React.createClass({displayName: "FullPage",
     $.ajax({
       url: this.props.url,
       dataType: 'json',        
-      data: {'character': this.state.character},
+
       success: function(data) {
         this.setState({character: data["character"]});
       }.bind(this),
@@ -254,7 +254,7 @@ var BaseStatsForm = React.createClass({displayName: "BaseStatsForm",
      	
 
 $( document ).ready(function() {
-  var url = "http://localhost:5000/characters/" + baked.character.id
+  var url = "http://localhost:3000/characters/" + baked.character.id
   React.render(
     React.createElement(FullPage, {character: baked.character, avaliable_classes: baked.avaliable_classes, character_classes: baked.character_classes, url: url}),
     document.getElementById('page')

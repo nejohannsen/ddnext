@@ -23,16 +23,12 @@ var FullPage = React.createClass({displayName: "FullPage",
       }.bind(this)
     });
   },
-  updateCharacterLocal: function(attr, value) {
-    var character = this.state.character
-    character[attr] = value
-    this.setState({character: character})
-  },
-  updateCharacterServer: function(character) {
+  updateCharacter: function(gclass) {
     $.ajax({
       url: this.props.url,
       dataType: 'json',        
-      data: {'character': this.state.character},
+      type: 'PATCH',           
+      data: character,            
       success: function(data) {
         this.setState({character: data["character"]});
       }.bind(this),
@@ -64,7 +60,8 @@ var FullPage = React.createClass({displayName: "FullPage",
         React.createElement(MainTitle, {
           addClassToCharacter: this.addClassToCharacter, 
           character: this.state.character, 
-          changeStateOfPopupForm: this.changeStateOfPopupForm}
+          changeStateOfPopupForm: this.changeStateOfPopupForm, 
+	  udpateCharacter: this.updateCharacter}
         ), 
         React.createElement(MainPage, null), 
 
@@ -75,16 +72,8 @@ var FullPage = React.createClass({displayName: "FullPage",
             character_classes: this.state.character_classes, 
             changeStateOfPopupForm: this.changeStateOfPopupForm}
           )
-        ) : (null), 
+        ) : (null)
 
-	this.state.form_visable['base_stats'] ? (
-	  React.createElement(BaseStatsForm, {
-	    character: this.state.character, 
-	    changeStateOfPopupForm: this.changeStateOfPopupForm, 
-	    updateCharacterLocal: this.updateCharacterLocal, 
-	    updateCharacterServer: this.updateCharacterServer}
-          )
-	) : (null)
       )
     );
   }
@@ -115,9 +104,9 @@ var LeftTitleBox = React.createClass({displayName: "LeftTitleBox",
   },
   render: function() {
     return (
-      React.createElement("div", {value: "base_stats", className: "left_title_box"}, 
-        React.createElement("div", {value: "base_stats", className: "value", onClick: this.handleClick}, this.props.character.name), 
-        React.createElement("div", {value: "base_stats", className: "label", onClick: this.handleClick}, "Name")
+      React.createElement("div", {value: "characterBaseStats", className: "left_title_box", onClick: this.handleClick}, 
+        React.createElement("div", {value: "characterBaseStats", className: "value", onClick: this.handleClick}, this.props.character.name), 
+        React.createElement("div", {value: "characterBaseStats", className: "label", onClick: this.handleClick}, "Name")
       )
     );
   }
@@ -231,13 +220,9 @@ var AddClassesForm = React.createClass({displayName: "AddClassesForm",
   }
 });
 
-var BaseStatsForm = React.createClass({displayName: "BaseStatsForm",
-  handelChange: function(e) {
-    this.props.updateCharacterLocal(e.target.getAttribute('name'), e.target.value)
-  },
+var baseStatForm = React.createClass({displayName: "baseStatForm",
   handelClick: function(e) {
-    this.props.updateCharacterServer()
-    this.props.changeStateOfPopupForm('base_stats')
+    this.props.changeStateOfPopupForm('characterBaseStats')
   },
   render: function() {
     return (
@@ -245,7 +230,7 @@ var BaseStatsForm = React.createClass({displayName: "BaseStatsForm",
         React.createElement("input", {name: "close_and_submit", type: "submit", onClick: this.handelClick}), 
         React.createElement("form", null, 
           React.createElement("label", {name: "name"}, "Character Name"), 
-          React.createElement("input", {name: "name", type: "text", value: this.props.character.name, onChange: this.handelChange})
+          React.createElement("input", {name: "name", type: "text", value: this.props.character.name})
         )
       )
     );
@@ -254,7 +239,7 @@ var BaseStatsForm = React.createClass({displayName: "BaseStatsForm",
      	
 
 $( document ).ready(function() {
-  var url = "http://localhost:5000/characters/" + baked.character.id
+  var url = "http://localhost:3000/characters/" + baked.character.id
   React.render(
     React.createElement(FullPage, {character: baked.character, avaliable_classes: baked.avaliable_classes, character_classes: baked.character_classes, url: url}),
     document.getElementById('page')

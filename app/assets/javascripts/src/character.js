@@ -5,7 +5,7 @@ var FullPage = React.createClass({
       character: this.props.character, 
       avaliable_classes: this.props.avaliable_classes, 
       character_classes: this.props.character_classes,
-      form_visable: {class_and_level: false}
+      form_visable: {class_and_level: false, base_stats: false}
     };
   },
   addClassToCharacter: function(gclass) {
@@ -22,6 +22,24 @@ var FullPage = React.createClass({
         /*console.error(this.props.url, status, err.toString());*/
       }.bind(this)
     });
+  },
+  updateCharacterLocal: function(attr, value) {
+    var character = this.state.character
+    character[attr] = value
+    this.setState({character: character})
+  },
+  updateCharacterServer: function(character) {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',        
+      data: {'character': this.state.character},
+      success: function(data) {
+        this.setState({character: data["character"]});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)             
+    });                        
   },
   changeStateOfPopupForm: function(formName) {
     var formVisable = this.state.form_visable
@@ -59,6 +77,14 @@ var FullPage = React.createClass({
           />
         ) : (null)}
 
+	{this.state.form_visable['base_stats'] ? (
+	  <BaseStatsForm
+	    character={this.state.character}
+	    changeStateOfPopupForm={this.changeStateOfPopupForm}
+	    updateCharacterLocal={this.updateCharacterLocal}
+	    updateCharacterServer={this.updateCharacterServer}
+          />
+	) : (null)}
       </div>
     );
   }
@@ -68,19 +94,30 @@ var MainTitle = React.createClass({
   render: function() {
     return (
       <div className="main_title">
-        <LeftTitleBox character={this.props.character} />
-        <RightTitleBox character={this.props.character} changeStateOfPopupForm={this.props.changeStateOfPopupForm} />
+        <LeftTitleBox 
+	  character={this.props.character}
+	  changeStateOfPopupForm={this.props.changeStateOfPopupForm}
+	  updateCharacter={this.props.updateCharacter}
+	/>
+        <RightTitleBox 
+	  character={this.props.character} 
+	  changeStateOfPopupForm={this.props.changeStateOfPopupForm}
+	  updateCharacter={this.props.updateCharacter}
+        />
       </div>
     );
   }
 });
 
 var LeftTitleBox = React.createClass({
+  handleClick: function(e) {
+    this.props.changeStateOfPopupForm(e.target.getAttribute('value'))
+  },
   render: function() {
     return (
-      <div className="left_title_box">
-        <div className="vaule">{this.props.character.name}</div>
-        <div className="label">Name</div>
+      <div value="base_stats" className="left_title_box" >
+        <div value="base_stats" className="value" onClick={this.handleClick}>{this.props.character.name}</div>
+        <div value="base_stats" className="label" onClick={this.handleClick}>Name</div>
       </div>
     );
   }
@@ -166,7 +203,6 @@ var AddClassesForm = React.createClass({
     this.props.changeStateOfPopupForm('class_and_level')
   },
   render: function() {
-    var props = this.props;
     var characterClassNodes = this.props.character_classes.map(function (cclass) {
       return (
         <ClassAndLevelList id={cclass.id} class_id={cclass.game_class_id} title={cclass.gclass_title} level={cclass.character_level} />
@@ -195,8 +231,30 @@ var AddClassesForm = React.createClass({
   }
 });
 
+var BaseStatsForm = React.createClass({
+  handelChange: function(e) {
+    this.props.updateCharacterLocal(e.target.getAttribute('name'), e.target.value)
+  },
+  handelClick: function(e) {
+    this.props.updateCharacterServer()
+    this.props.changeStateOfPopupForm('base_stats')
+  },
+  render: function() {
+    return (
+      <div id='character_base_stats' className='popup_form'>
+        <input name="close_and_submit" type="submit" onClick={this.handelClick} />
+        <form>
+          <label name='name'>Character Name</label>
+          <input name='name' type='text' value={this.props.character.name} onChange={this.handelChange} />
+        </form>
+      </div>
+    );
+  }
+});
+     	
+
 $( document ).ready(function() {
-  var url = "http://localhost:3000/characters/" + baked.character.id
+  var url = "http://localhost:5000/characters/" + baked.character.id
   React.render(
     <FullPage character={baked.character} avaliable_classes={baked.avaliable_classes} character_classes={baked.character_classes} url={url} />,
     document.getElementById('page')

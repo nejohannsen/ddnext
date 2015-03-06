@@ -5,7 +5,7 @@ var FullPage = React.createClass({displayName: "FullPage",
       character: this.props.character, 
       avaliable_classes: this.props.avaliable_classes, 
       character_classes: this.props.character_classes,
-      form_visable: {class_and_level: false, base_stats: false}
+      form_visable: {class_and_level: false}
     };
   },
   addClassToCharacter: function(gclass) {
@@ -23,16 +23,12 @@ var FullPage = React.createClass({displayName: "FullPage",
       }.bind(this)
     });
   },
-  updateCharacterLocal: function(attr, value) {
-    var character = this.state.character
-    character[attr] = value
-    this.setState({character: character})
-  },
-  updateCharacterServer: function(character) {
+  updateCharacter: function(gclass) {
     $.ajax({
       url: this.props.url,
       dataType: 'json',        
-      data: {'character': this.state.character},
+      type: 'PATCH',           
+      data: character,            
       success: function(data) {
         this.setState({character: data["character"]});
       }.bind(this),
@@ -64,7 +60,8 @@ var FullPage = React.createClass({displayName: "FullPage",
         React.createElement(MainTitle, {
           addClassToCharacter: this.addClassToCharacter, 
           character: this.state.character, 
-          changeStateOfPopupForm: this.changeStateOfPopupForm}
+          changeStateOfPopupForm: this.changeStateOfPopupForm, 
+	  udpateCharacter: this.updateCharacter}
         ), 
         React.createElement(MainPage, null), 
 
@@ -75,16 +72,8 @@ var FullPage = React.createClass({displayName: "FullPage",
             character_classes: this.state.character_classes, 
             changeStateOfPopupForm: this.changeStateOfPopupForm}
           )
-        ) : (null), 
+        ) : (null)
 
-	this.state.form_visable['base_stats'] ? (
-	  React.createElement(BaseStatsForm, {
-	    character: this.state.character, 
-	    changeStateOfPopupForm: this.changeStateOfPopupForm, 
-	    updateCharacterLocal: this.updateCharacterLocal, 
-	    updateCharacterServer: this.updateCharacterServer}
-          )
-	) : (null)
       )
     );
   }
@@ -110,14 +99,11 @@ var MainTitle = React.createClass({displayName: "MainTitle",
 });
 
 var LeftTitleBox = React.createClass({displayName: "LeftTitleBox",
-  handleClick: function(e) {
-    this.props.changeStateOfPopupForm(e.target.getAttribute('value'))
-  },
   render: function() {
     return (
-      React.createElement("div", {value: "base_stats", className: "left_title_box"}, 
-        React.createElement("div", {value: "base_stats", className: "value", onClick: this.handleClick}, this.props.character.name), 
-        React.createElement("div", {value: "base_stats", className: "label", onClick: this.handleClick}, "Name")
+      React.createElement("div", {className: "left_title_box"}, 
+        React.createElement("div", {className: "value"}, this.props.character.name), 
+        React.createElement("div", {className: "label"}, "Name")
       )
     );
   }
@@ -203,6 +189,7 @@ var AddClassesForm = React.createClass({displayName: "AddClassesForm",
     this.props.changeStateOfPopupForm('class_and_level')
   },
   render: function() {
+    var props = this.props;
     var characterClassNodes = this.props.character_classes.map(function (cclass) {
       return (
         React.createElement(ClassAndLevelList, {id: cclass.id, class_id: cclass.game_class_id, title: cclass.gclass_title, level: cclass.character_level})
@@ -231,30 +218,8 @@ var AddClassesForm = React.createClass({displayName: "AddClassesForm",
   }
 });
 
-var BaseStatsForm = React.createClass({displayName: "BaseStatsForm",
-  handelChange: function(e) {
-    this.props.updateCharacterLocal(e.target.getAttribute('name'), e.target.value)
-  },
-  handelClick: function(e) {
-    this.props.updateCharacterServer()
-    this.props.changeStateOfPopupForm('base_stats')
-  },
-  render: function() {
-    return (
-      React.createElement("div", {id: "character_base_stats", className: "popup_form"}, 
-        React.createElement("input", {name: "close_and_submit", type: "submit", onClick: this.handelClick}), 
-        React.createElement("form", null, 
-          React.createElement("label", {name: "name"}, "Character Name"), 
-          React.createElement("input", {name: "name", type: "text", value: this.props.character.name, onChange: this.handelChange})
-        )
-      )
-    );
-  }
-});
-     	
-
 $( document ).ready(function() {
-  var url = "http://localhost:5000/characters/" + baked.character.id
+  var url = "http://localhost:3000/characters/" + baked.character.id
   React.render(
     React.createElement(FullPage, {character: baked.character, avaliable_classes: baked.avaliable_classes, character_classes: baked.character_classes, url: url}),
     document.getElementById('page')

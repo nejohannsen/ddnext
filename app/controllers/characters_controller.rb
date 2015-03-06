@@ -20,6 +20,7 @@ class CharactersController < ApplicationController
 
   def update
     @char = Character.find(params[:id])
+    debugger
     if params[:character_class].present?
       respond_to do |format|
         if @char.character_classes.create(game_class_id: params[:character_class][:game_class])
@@ -35,7 +36,7 @@ class CharactersController < ApplicationController
         respond_to do |format|
           format.html {redirect_to @char, notice: "Updated character"}
           debugger
-          format.js { @char.to_json }
+          format.json { render json: {character: @char}, status: :updated, location: @char }
         end
        else
          respond_to do |format|
