@@ -305,3 +305,18 @@
   }
 }
 
+.sub_race input[type="radio"] {
+    display:none; 
+}
+
+.sub_race label {
+    display:inline-block;
+    background-color:#ddd;
+    padding:4px 11px;
+    font-family:Arial;
+    font-size:16px;
+}
+
+.sub_race input[type="radio"]:checked + label { 
+    border: 3px solid green;
+}

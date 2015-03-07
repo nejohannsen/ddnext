@@ -317,11 +317,7 @@ var RaceList = React.createClass({displayName: "RaceList",
   render: function() {
     var subRaceNodes = this.props.sub_races.map(function(sub) {
       return (
-        React.createElement(SubRaceList, {
-          title: sub.title, 
-          description: sub.description, 
-          updateCharacterLocal: this.props.updateCharacterLocal}
-        )
+        React.createElement(SubRaceList, {title: sub.title, description: sub.description})
       );
     }, this);
 

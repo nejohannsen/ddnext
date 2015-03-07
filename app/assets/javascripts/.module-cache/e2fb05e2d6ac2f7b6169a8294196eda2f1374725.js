@@ -160,7 +160,7 @@ var RightTitleBox = React.createClass({displayName: "RightTitleBox",
           React.createElement("div", {value: "base_stats", className: "label"}, "Faction")
         ), 
         React.createElement("div", {value: "race", onClick: this.handlePopupForm, className: "field"}, 
-          React.createElement("div", {value: "races", className: "value"}, this.props.character.race), 
+          React.createElement("div", {value: "races", className: "value"}, "Hill Dwarf"), 
           React.createElement("div", {value: "races", className: "label"}, "Race")
         ), 
         React.createElement("div", {value: "base_stats", onClick: this.handlePopupForm, className: "field"}, 
@@ -218,22 +218,13 @@ var AddClassesForm = React.createClass({displayName: "AddClassesForm",
   render: function() {
     var characterClassNodes = this.props.character_classes.map(function (cclass) {
       return (
-        React.createElement(ClassAndLevelList, {
-          id: cclass.id, 
-          class_id: cclass.game_class_id, 
-          title: cclass.gclass_title, 
-          level: cclass.character_level}
-        )
+        React.createElement(ClassAndLevelList, {id: cclass.id, class_id: cclass.game_class_id, title: cclass.gclass_title, level: cclass.character_level})
       );
     })
 
     var optionNodes = this.props.avaliable_classes.map(function (gclass) {
       return (
-        React.createElement(ClassOptions, {
-          id: gclass.id, 
-          title: gclass.title, 
-          addClassToCharacter: this.props.addClassToCharacter}
-        )
+        React.createElement(ClassOptions, {id: gclass.id, title: gclass.title, addClassToCharacter: this.props.addClassToCharacter})
       );
     }, this );
 
@@ -298,38 +289,10 @@ var BaseStatsForm = React.createClass({displayName: "BaseStatsForm",
     );
   }
 });
-
-var SubRaceList = React.createClass({displayName: "SubRaceList",
-  handelClick: function(e) {
-    this.props.updateCharacterLocal("race", e.target.value);
-  },
-  render: function() {
-    return (
-      React.createElement("div", {className: "sub_race"}, 
-        React.createElement("input", {onClick: this.handelClick, id: this.props.title.replace(/ /g,"_").toLowerCase(), type: "radio", value: this.props.title, name: "sub_race_option"}), 
-        React.createElement("label", {htmlFor: this.props.title.replace(/ /g,"_").toLowerCase()}, this.props.title)
-      )
-    );
-  }
-});
-
 var RaceList = React.createClass({displayName: "RaceList",
   render: function() {
-    var subRaceNodes = this.props.sub_races.map(function(sub) {
-      return (
-        React.createElement(SubRaceList, {
-          title: sub.title, 
-          description: sub.description, 
-          updateCharacterLocal: this.props.updateCharacterLocal}
-        )
-      );
-    }, this);
-
     return (
-      React.createElement("div", null, 
-        React.createElement("h2", null, this.props.title), 
-        subRaceNodes
-      )
+      React.createElement("h2", null, this.props.title)
     );
   }
 });
@@ -345,20 +308,14 @@ var RacesForm = React.createClass({displayName: "RacesForm",
   render: function() {
     var raceNodes = this.props.races.map(function (race) {
       return (
-        React.createElement(RaceList, {
-          title: race.title, 
-          description: race.description, 
-          sub_races: race.sub, 
-          updateCharacterLocal: this.props.updateCharacterLocal, 
-          updateCharacterGlobal: this.props.updateCharacterGlobal}
-        )
+        React.createElement(RaceList, {title: race.title, description: race.description})
       );
     }, this )
 
     return (
       React.createElement("div", {id: "race_form", className: "popup_form"}, 
         React.createElement("input", {name: "close_and_submit", type: "submit", onClick: this.handelClick}), 
-        raceNodes
+        raceNode
       )
     );
   }

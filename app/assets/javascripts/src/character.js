@@ -1,11 +1,12 @@
 var FullPage = React.createClass({
   getInitialState: function() {
     return {
-      url: this.props.url, 
+      url: this.props.url,
+      races: this.props.races,
       character: this.props.character, 
       avaliable_classes: this.props.avaliable_classes, 
       character_classes: this.props.character_classes,
-      form_visable: {class_and_level: false, base_stats: false}
+      form_visable: {class_and_level: false, base_stats: false, races:false}
     };
   },
   addClassToCharacter: function(gclass) {
@@ -31,7 +32,7 @@ var FullPage = React.createClass({
   updateCharacterServer: function(character) {
     $.ajax({
       url: this.props.url,
-      dataType: 'json',        
+      dataType: 'json',
       type: 'PATCH',
       data: {'character': this.state.character},
       success: function(data) {
@@ -39,8 +40,8 @@ var FullPage = React.createClass({
       }.bind(this),
       error: function(xhr, status, err) {
        /* console.error(this.props.url, status, err.toString());*/
-      }.bind(this)             
-    });                        
+      }.bind(this)
+    });
   },
   changeStateOfPopupForm: function(formName) {
     var formVisable = this.state.form_visable
@@ -78,14 +79,25 @@ var FullPage = React.createClass({
           />
         ) : (null)}
 
-	{this.state.form_visable['base_stats'] ? (
-	  <BaseStatsForm
-	    character={this.state.character}
-	    changeStateOfPopupForm={this.changeStateOfPopupForm}
-	    updateCharacterLocal={this.updateCharacterLocal}
-	    updateCharacterServer={this.updateCharacterServer}
+	      {this.state.form_visable['base_stats'] ? (
+	        <BaseStatsForm
+	          character={this.state.character}
+	          changeStateOfPopupForm={this.changeStateOfPopupForm}
+	          updateCharacterLocal={this.updateCharacterLocal}
+	          updateCharacterServer={this.updateCharacterServer}
           />
-	) : (null)}
+	      ) : (null)}
+
+        {this.state.form_visable['races'] ? (
+	        <RacesForm
+	          character={this.state.character}
+            races={this.state.races}
+	          changeStateOfPopupForm={this.changeStateOfPopupForm}
+	          updateCharacterLocal={this.updateCharacterLocal}
+	          updateCharacterServer={this.updateCharacterServer}
+          />
+	      ) : (null)}
+
       </div>
     );
   }
@@ -96,14 +108,14 @@ var MainTitle = React.createClass({
     return (
       <div className="main_title">
         <LeftTitleBox 
-	  character={this.props.character}
-	  changeStateOfPopupForm={this.props.changeStateOfPopupForm}
-	  updateCharacter={this.props.updateCharacter}
-	/>
+	        character={this.props.character}
+	        changeStateOfPopupForm={this.props.changeStateOfPopupForm}
+	        updateCharacter={this.props.updateCharacter}
+	      />
         <RightTitleBox 
-	  character={this.props.character} 
-	  changeStateOfPopupForm={this.props.changeStateOfPopupForm}
-	  updateCharacter={this.props.updateCharacter}
+	        character={this.props.character} 
+	        changeStateOfPopupForm={this.props.changeStateOfPopupForm}
+	        updateCharacter={this.props.updateCharacter}
         />
       </div>
     );
@@ -116,9 +128,9 @@ var LeftTitleBox = React.createClass({
   },
   render: function() {
     return (
-      <div value="base_stats" className="left_title_box" >
-        <div value="base_stats" className="value" onClick={this.handleClick}>{this.props.character.name}</div>
-        <div value="base_stats" className="label" onClick={this.handleClick}>Name</div>
+      <div value="base_stats" className="left_title_box" onClick={this.handleClick}>
+        <div value="base_stats" className="value" >{this.props.character.name}</div>
+        <div value="base_stats" className="label">Name</div>
       </div>
     );
   }
@@ -135,33 +147,33 @@ var RightTitleBox = React.createClass({
           <div value="class_and_level" className="value">{this.props.character.classes_and_levels}</div>
           <div value="class_and_level" className="label">Class and Level</div>
         </div>
-        <div className="field">
-          <div className="value">Background</div>
-          <div className="label">Backgorund</div>
+        <div value="base_stats" onClick={this.handlePopupForm} className="field">
+          <div value="base_stats" className="value">Background</div>
+          <div cvalue="base_stats" lassName="label">Backgorund</div>
         </div>
-        <div className="field">
-          <div className="value">Nick</div>
-          <div className="label">Player Name</div>
+        <div value="base_stats" onClick={this.handlePopupForm} className="field">
+          <div value="base_stats" className="value">{this.props.character.player}</div>
+          <div value="base_stats" className="label">Player Name</div>
         </div>
-        <div className="field">
-          <div className="value">Harpers</div>
-          <div className="label">Faction</div>
+        <div value="base_stats" onClick={this.handlePopupForm} className="field">
+          <div value="base_stats" className="value">{this.props.character.faction}</div>
+          <div value="base_stats" className="label">Faction</div>
         </div>
-        <div className="field">
-          <div className="value">Hill Dwarf</div>
-          <div className="label">Race</div>
+        <div value="race" onClick={this.handlePopupForm} className="field">
+          <div value="races" className="value">{this.props.character.race}</div>
+          <div value="races" className="label">Race</div>
         </div>
-        <div className="field">
-          <div className="value">Alignment</div>
-          <div className="label">Alignment</div>
+        <div value="base_stats" onClick={this.handlePopupForm} className="field">
+          <div value="base_stats" className="value">{this.props.character.alignment}</div>
+          <div value="base_stats" className="label">Alignment</div>
         </div>
-        <div className="field">
-          <div className="value">2700</div>
-          <div className="label">Experince</div>
+        <div value="base_stats" onClick={this.handlePopupForm} className="field">
+          <div value="base_stats" className="value">2700</div>
+          <div value="base_stats" className="label">Experince</div>
         </div>
-        <div className="field">
-          <div className="value">4u7985748957435</div>
-          <div className="label">DCI Number</div>
+        <div value="base_stats" onClick={this.handlePopupForm} className="field">
+          <div value="base_stats" className="value">4u7985748957435</div>
+          <div value="base_stats" className="label">DCI Number</div>
         </div>
       </div>
     );
@@ -206,13 +218,22 @@ var AddClassesForm = React.createClass({
   render: function() {
     var characterClassNodes = this.props.character_classes.map(function (cclass) {
       return (
-        <ClassAndLevelList id={cclass.id} class_id={cclass.game_class_id} title={cclass.gclass_title} level={cclass.character_level} />
+        <ClassAndLevelList 
+          id={cclass.id} 
+          class_id={cclass.game_class_id} 
+          title={cclass.gclass_title} 
+          level={cclass.character_level} 
+        />
       );
     })
 
     var optionNodes = this.props.avaliable_classes.map(function (gclass) {
       return (
-        <ClassOptions id={gclass.id} title={gclass.title}  addClassToCharacter={this.props.addClassToCharacter} />
+        <ClassOptions 
+          id={gclass.id}
+          title={gclass.title}
+          addClassToCharacter={this.props.addClassToCharacter}
+        />
       );
     }, this );
 
@@ -247,17 +268,112 @@ var BaseStatsForm = React.createClass({
         <form>
           <label name='name'>Character Name</label>
           <input name='name' type='text' value={this.props.character.name} onChange={this.handelChange} />
+          <br />
+          <label name='player'>Player Name</label>
+          <input name='player' type='text' value={this.props.character.player} onChange={this.handelChange} />
+          <br />
+          <label name='dci'>DCI Number(Broken)</label>
+          <input name='dci' type='text' value={this.props.character.dci} onChange={this.handelChange} />
+          <br />
+          <label name='alignment'>Alignment</label>
+          <select name='alignment' type='text' value={this.props.character.alignment} onChange={this.handelChange}>
+            <option value="Lawfull Good">Lawfull Good</option>
+            <option value="Neutral Good">Neutral Good</option>
+            <option value="Chaotic Good">Chaotic Good</option>
+            <option value="Lawfull Neutral">Lawfull Neutral</option>
+            <option value="Neutral">True Neutral</option>
+            <option value="Chaotic Neutral">Chaotic Neutral</option>
+          </select>
+          <br />
+          <label name='faction'>Faction (Broken)</label>
+          <select name='faction' value={this.props.character.faction} onChange={this.handelChange}>
+            <option value="Harpers">Harpers</option>
+            <option value="Order of the Gauntlet">Order of the Gauntlet</option>
+            <option value="Lords’ Alliance">Lords’ Alliance</option>
+            <option value="Zhentarim">Zhentarim</option>
+            <option value="Emerald Enclave">Emerald Enclave</option>
+          </select>
         </form>
       </div>
     );
   }
 });
-     	
+
+var SubRaceList = React.createClass({
+  handelClick: function(e) {
+    this.props.updateCharacterLocal("race", e.target.value);
+  },
+  render: function() {
+    return (
+      <div className="sub_race" >
+        <input onClick={this.handelClick} id={this.props.title.replace(/ /g,"_").toLowerCase()} type="radio" value={this.props.title} name='sub_race_option' />
+        <label htmlFor={this.props.title.replace(/ /g,"_").toLowerCase()}>{this.props.title}</label>
+      </div>
+    );
+  }
+});
+
+var RaceList = React.createClass({
+  render: function() {
+    var subRaceNodes = this.props.sub_races.map(function(sub) {
+      return (
+        <SubRaceList
+          title={sub.title}
+          description={sub.description}
+          updateCharacterLocal={this.props.updateCharacterLocal}
+        />
+      );
+    }, this);
+
+    return (
+      <div>
+        <h2>{this.props.title}</h2>
+        {subRaceNodes}
+      </div>
+    );
+  }
+});
+
+var RacesForm = React.createClass({
+  handelChange: function(e) {
+    this.props.updateCharacterLocal(e.target.getAttribute('name'), e.target.value)
+  },
+  handelClick: function(e) {
+    this.props.updateCharacterServer()
+    this.props.changeStateOfPopupForm('races')
+  },
+  render: function() {
+    var raceNodes = this.props.races.map(function (race) {
+      return (
+        <RaceList 
+          title={race.title}
+          description={race.description}
+          sub_races={race.sub}
+          updateCharacterLocal={this.props.updateCharacterLocal}
+          updateCharacterGlobal={this.props.updateCharacterGlobal}
+        />
+      );
+    }, this )
+
+    return (
+      <div id='race_form' className='popup_form'>
+        <input name="close_and_submit" type="submit" onClick={this.handelClick} />
+        {raceNodes}
+      </div>
+    );
+  }
+});
 
 $( document ).ready(function() {
   var url = "http://localhost:5000/characters/" + baked.character.id
   React.render(
-    <FullPage character={baked.character} avaliable_classes={baked.avaliable_classes} character_classes={baked.character_classes} url={baked.url} />,
+    <FullPage 
+      character={baked.character} 
+      avaliable_classes={baked.avaliable_classes} 
+      character_classes={baked.character_classes}
+      races={baked.races}
+      url={baked.url}
+    />,
     document.getElementById('page')
   );
 });

@@ -11,6 +11,25 @@ class CharactersController < ApplicationController
       @avaliable_classes <<  {id: gclass.id, title: gclass.title}
     end
     @character_classes = CharacterClass.where(character_id: params[:id])
+    @races = [
+      {
+        title: "Elf",
+        value: "Description",
+        sub: [
+          {title: "High Elf", value: "high elf description"},
+          {title: "Moon Elf", value: "moon elf description"}
+        ]
+      },
+      {
+        title: "Dwarf",
+        value: "description",
+        sub: [
+          {title: "Hill Dwarf", value: "Hill Dwarf Description"},
+          {title: "Mountain Dwarf", value: "Mountain Dwarf Description"}
+        ]
+      }
+    ]
+
   end
 
   def create
