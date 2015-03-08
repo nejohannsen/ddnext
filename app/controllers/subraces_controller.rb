@@ -46,6 +46,6 @@ class SubracesController < ApplicationController
   end
 
   def subrace_params
-    params.required(:subrace).permit(:title, :description)
+    params.required(:subrace).permit(:title, :description, :race_id)
   end
 end

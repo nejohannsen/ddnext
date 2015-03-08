@@ -15,3 +15,5 @@
 /log/*.log
 /tmp
 /.env
+/app/assets/javascripts/.module-cache/*.*
+/app/assets/javascripts/.module-cache/manifest/*.*

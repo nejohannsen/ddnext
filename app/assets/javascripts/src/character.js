@@ -3,8 +3,8 @@ var FullPage = React.createClass({
     return {
       url: this.props.url,
       races: this.props.races,
-      character: this.props.character, 
-      avaliable_classes: this.props.avaliable_classes, 
+      character: this.props.character,
+      avaliable_classes: this.props.avaliable_classes,
       character_classes: this.props.character_classes,
       form_visable: {class_and_level: false, base_stats: false, races:false}
     };
@@ -172,7 +172,7 @@ var RightTitleBox = React.createClass({
           <div value="base_stats" className="label">Experince</div>
         </div>
         <div value="base_stats" onClick={this.handlePopupForm} className="field">
-          <div value="base_stats" className="value">4u7985748957435</div>
+          <div value="base_stats" className="value">{this.props.character.dci}</div>
           <div value="base_stats" className="label">DCI Number</div>
         </div>
       </div>
@@ -299,6 +299,17 @@ var BaseStatsForm = React.createClass({
   }
 });
 
+var RaceInfo = React.createClass({
+  render: function() {
+    return (
+      <div className="race_info">
+        {this.props.description}
+      </div>
+    );
+  }
+});
+
+
 var SubRaceList = React.createClass({
   handelClick: function(e) {
     this.props.updateCharacterLocal("race", e.target.value);
@@ -317,24 +328,47 @@ var RaceList = React.createClass({
   render: function() {
     var subRaceNodes = this.props.sub_races.map(function(sub) {
       return (
-        <SubRaceList
-          title={sub.title}
-          description={sub.description}
-          updateCharacterLocal={this.props.updateCharacterLocal}
-        />
+        <div>
+          <SubRaceList
+            title={sub.title}
+            description={sub.description}
+            updateCharacterLocal={this.props.updateCharacterLocal}
+          />
+          <RaceInfo
+            title={sub.title}
+            description={sub.description}
+          />
+        </div>
       );
     }, this);
 
     return (
       <div>
         <h2>{this.props.title}</h2>
-        {subRaceNodes}
+        <div className>
+          {subRaceNodes}
+        </div>
       </div>
     );
   }
 });
 
 var RacesForm = React.createClass({
+  getInitialState: function() {
+    return {
+      races: this.props.races,
+      character: this.props.character,
+      avaliable_classes: this.props.avaliable_classes,
+      character_classes: this.props.character_classes,
+      form_visable: {class_and_level: false, base_stats: false, races:false}
+    };
+  },
+  getSelectedRace: function() {
+
+  },
+  updateSelectedRace: function(data) {
+    this.setState({selected_race_info: data})
+  },
   handelChange: function(e) {
     this.props.updateCharacterLocal(e.target.getAttribute('name'), e.target.value)
   },
@@ -345,6 +379,7 @@ var RacesForm = React.createClass({
   render: function() {
     var raceNodes = this.props.races.map(function (race) {
       return (
+        <div>
         <RaceList 
           title={race.title}
           description={race.description}
@@ -352,6 +387,12 @@ var RacesForm = React.createClass({
           updateCharacterLocal={this.props.updateCharacterLocal}
           updateCharacterGlobal={this.props.updateCharacterGlobal}
         />
+        <RaceInfo
+          title={race.title}
+          description={race.description}
+        />
+        </div>
+
       );
     }, this )
 

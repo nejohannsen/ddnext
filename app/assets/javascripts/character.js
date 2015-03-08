@@ -3,8 +3,8 @@ var FullPage = React.createClass({displayName: "FullPage",
     return {
       url: this.props.url,
       races: this.props.races,
-      character: this.props.character, 
-      avaliable_classes: this.props.avaliable_classes, 
+      character: this.props.character,
+      avaliable_classes: this.props.avaliable_classes,
       character_classes: this.props.character_classes,
       form_visable: {class_and_level: false, base_stats: false, races:false}
     };
@@ -172,7 +172,7 @@ var RightTitleBox = React.createClass({displayName: "RightTitleBox",
           React.createElement("div", {value: "base_stats", className: "label"}, "Experince")
         ), 
         React.createElement("div", {value: "base_stats", onClick: this.handlePopupForm, className: "field"}, 
-          React.createElement("div", {value: "base_stats", className: "value"}, "4u7985748957435"), 
+          React.createElement("div", {value: "base_stats", className: "value"}, this.props.character.dci), 
           React.createElement("div", {value: "base_stats", className: "label"}, "DCI Number")
         )
       )
@@ -299,6 +299,17 @@ var BaseStatsForm = React.createClass({displayName: "BaseStatsForm",
   }
 });
 
+var RaceInfo = React.createClass({displayName: "RaceInfo",
+  render: function() {
+    return (
+      React.createElement("div", {className: "race_info"}, 
+        this.props.description
+      )
+    );
+  }
+});
+
+
 var SubRaceList = React.createClass({displayName: "SubRaceList",
   handelClick: function(e) {
     this.props.updateCharacterLocal("race", e.target.value);
@@ -317,10 +328,16 @@ var RaceList = React.createClass({displayName: "RaceList",
   render: function() {
     var subRaceNodes = this.props.sub_races.map(function(sub) {
       return (
-        React.createElement(SubRaceList, {
-          title: sub.title, 
-          description: sub.description, 
-          updateCharacterLocal: this.props.updateCharacterLocal}
+        React.createElement("div", null, 
+          React.createElement(SubRaceList, {
+            title: sub.title, 
+            description: sub.description, 
+            updateCharacterLocal: this.props.updateCharacterLocal}
+          ), 
+          React.createElement(RaceInfo, {
+            title: sub.title, 
+            description: sub.description}
+          )
         )
       );
     }, this);
@@ -328,13 +345,30 @@ var RaceList = React.createClass({displayName: "RaceList",
     return (
       React.createElement("div", null, 
         React.createElement("h2", null, this.props.title), 
-        subRaceNodes
+        React.createElement("div", {className: true}, 
+          subRaceNodes
+        )
       )
     );
   }
 });
 
 var RacesForm = React.createClass({displayName: "RacesForm",
+  getInitialState: function() {
+    return {
+      races: this.props.races,
+      character: this.props.character,
+      avaliable_classes: this.props.avaliable_classes,
+      character_classes: this.props.character_classes,
+      form_visable: {class_and_level: false, base_stats: false, races:false}
+    };
+  },
+  getSelectedRace: function() {
+
+  },
+  updateSelectedRace: function(data) {
+    this.setState({selected_race_info: data})
+  },
   handelChange: function(e) {
     this.props.updateCharacterLocal(e.target.getAttribute('name'), e.target.value)
   },
@@ -345,13 +379,20 @@ var RacesForm = React.createClass({displayName: "RacesForm",
   render: function() {
     var raceNodes = this.props.races.map(function (race) {
       return (
+        React.createElement("div", null, 
         React.createElement(RaceList, {
           title: race.title, 
           description: race.description, 
           sub_races: race.sub, 
           updateCharacterLocal: this.props.updateCharacterLocal, 
           updateCharacterGlobal: this.props.updateCharacterGlobal}
+        ), 
+        React.createElement(RaceInfo, {
+          title: race.title, 
+          description: race.description}
         )
+        )
+
       );
     }, this )
 
