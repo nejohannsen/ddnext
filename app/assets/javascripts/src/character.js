@@ -52,13 +52,29 @@ var FullPage = React.createClass({
     $.ajax({
       url: this.props.url,
       dataType: 'json',
-      success: function(character) {
-        this.setState({character: character});
+      success: function(data) {
+        this.setState({character: data.character, characeter_classes: data.character_classes});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
+  },
+  removeClassLevel: function(class_level) {
+    url = this.props.url + '/remove_class_level'
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      type: 'PATCH',
+      data: class_level,
+      success: function(data) {
+        this.setState({character: data["character"], character_classes: data["character_classes"]});
+      }.bind(this),
+      error: function(xhr, status, err) {
+       /* console.error(this.props.url, status, err.toString());*/
+      }.bind(this)
+    });
+
   },
   render: function() {
     return (
@@ -76,6 +92,8 @@ var FullPage = React.createClass({
             avaliable_classes={this.state.avaliable_classes} 
             character_classes={this.state.character_classes} 
             changeStateOfPopupForm={this.changeStateOfPopupForm}
+            removeClassLevel={this.removeClassLevel}
+
           />
         ) : (null)}
 
@@ -204,9 +222,15 @@ var ClassOptions = React.createClass({
 });
 
 var ClassAndLevelList = React.createClass({
+  handelClick: function(e) {
+    this.props.removeClassLevel({class_level: e.target.getAttribute('value')})
+  },
   render: function() {
     return (
-      <li>Took a level in {this.props.title} at character level {this.props.level}</li>
+      <div>
+        <li>Took a level in {this.props.title} at character level {this.props.level}</li>
+        <a href="#" onClick={this.handelClick} value={this.props.id}>Remove</a>
+      </div>
     );
   }
 });
@@ -223,9 +247,10 @@ var AddClassesForm = React.createClass({
           class_id={cclass.game_class_id} 
           title={cclass.gclass_title} 
           level={cclass.character_level} 
+          removeClassLevel={this.props.removeClassLevel}
         />
       );
-    })
+    }, this)
 
     var optionNodes = this.props.avaliable_classes.map(function (gclass) {
       return (
@@ -299,20 +324,10 @@ var BaseStatsForm = React.createClass({
   }
 });
 
-var RaceInfo = React.createClass({
-  render: function() {
-    return (
-      <div className="race_info">
-        {this.props.description}
-      </div>
-    );
-  }
-});
-
-
 var SubRaceList = React.createClass({
   handelClick: function(e) {
     this.props.updateCharacterLocal("race", e.target.value);
+    this.props.updateCharacterServer();
   },
   render: function() {
     return (
@@ -333,10 +348,7 @@ var RaceList = React.createClass({
             title={sub.title}
             description={sub.description}
             updateCharacterLocal={this.props.updateCharacterLocal}
-          />
-          <RaceInfo
-            title={sub.title}
-            description={sub.description}
+            updateCharacterServer={this.props.updateCharacterServer}
           />
         </div>
       );
@@ -379,27 +391,28 @@ var RacesForm = React.createClass({
   render: function() {
     var raceNodes = this.props.races.map(function (race) {
       return (
-        <div>
         <RaceList 
           title={race.title}
           description={race.description}
           sub_races={race.sub}
           updateCharacterLocal={this.props.updateCharacterLocal}
-          updateCharacterGlobal={this.props.updateCharacterGlobal}
+          updateCharacterServer={this.props.updateCharacterServer}
         />
-        <RaceInfo
-          title={race.title}
-          description={race.description}
-        />
-        </div>
-
       );
     }, this )
 
     return (
       <div id='race_form' className='popup_form'>
         <input name="close_and_submit" type="submit" onClick={this.handelClick} />
-        {raceNodes}
+        <div className="pct50">
+          {raceNodes}
+        </div>
+        <div className="pct50">
+          <h2>{this.props.character.race_info.race.title}</h2>
+          {this.props.character.race_info.race.description}
+          <h2>{this.props.character.race_info.subrace.title}</h2>
+          {this.props.character.race_info.subrace.description}
+        </div>
       </div>
     );
   }

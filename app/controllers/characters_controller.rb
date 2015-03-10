@@ -10,7 +10,7 @@ class CharactersController < ApplicationController
     GameClass.all.each do |gclass|
       @avaliable_classes <<  {id: gclass.id, title: gclass.title}
     end
-    @character_classes = CharacterClass.where(character_id: params[:id])
+    @character_classes = CharacterClass.where(character_id: params[:id]).order('character_level')
     @races = []
     Race.all.each do |race|
       temp = {}
@@ -63,7 +63,22 @@ class CharactersController < ApplicationController
 
     end
   end
-   def character_params
-     params.require(:character).permit!
-   end
+
+  def remove_class_level
+    char = CharacterClass.find(params[:class_level]).character
+    char.remove_class_level(params[:class_level])
+
+    #Adjust the object in the model. Need to make sure I have updated info
+    char = Character.find(char)
+    cclasses = char.character_classes
+
+    @responce = {character: char, character_classes: cclasses}
+    respond_to do |format|
+      format.json { render json: @responce, status: :created, location: @responce }
+    end
+  end
+
+  def character_params
+    params.require(:character).permit!
+  end
 end

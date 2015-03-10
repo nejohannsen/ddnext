@@ -7,9 +7,9 @@ class CharacterClass < ActiveRecord::Base
   validates :character, presence: true
   validates :game_class, presence: true
 
+  validate :allowed_levels
+
   after_validation :set_gclass_title
-
-
 
   def set_character_level
     if self.character_level.nil?
@@ -21,4 +21,11 @@ class CharacterClass < ActiveRecord::Base
   def set_gclass_title
     write_attribute(:gclass_title, self.game_class.title)
   end
+
+  def allowed_levels
+    debugger
+    errors.add :character_level, "You need more experince" if (self.character.character_classes.count >= (Character.get_level(self.character.experince_points, 'exp')))
+  end
+
+
 end

@@ -5,6 +5,8 @@ Ddnext::Application.routes.draw do
   resources :characters
   resources :character_classes
 
+  patch "characters/:id/remove_class_level" => 'characters#remove_class_level'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

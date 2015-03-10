@@ -52,13 +52,29 @@ var FullPage = React.createClass({displayName: "FullPage",
     $.ajax({
       url: this.props.url,
       dataType: 'json',
-      success: function(character) {
-        this.setState({character: character});
+      success: function(data) {
+        this.setState({character: data.character, characeter_classes: data.character_classes});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
+  },
+  removeClassLevel: function(class_level) {
+    url = this.props.url + '/remove_class_level'
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      type: 'PATCH',
+      data: class_level,
+      success: function(data) {
+        this.setState({character: data["character"], character_classes: data["character_classes"]});
+      }.bind(this),
+      error: function(xhr, status, err) {
+       /* console.error(this.props.url, status, err.toString());*/
+      }.bind(this)
+    });
+
   },
   render: function() {
     return (
@@ -75,7 +91,9 @@ var FullPage = React.createClass({displayName: "FullPage",
             addClassToCharacter: this.addClassToCharacter, 
             avaliable_classes: this.state.avaliable_classes, 
             character_classes: this.state.character_classes, 
-            changeStateOfPopupForm: this.changeStateOfPopupForm}
+            changeStateOfPopupForm: this.changeStateOfPopupForm, 
+            removeClassLevel: this.removeClassLevel}
+
           )
         ) : (null), 
 
@@ -204,9 +222,15 @@ var ClassOptions = React.createClass({displayName: "ClassOptions",
 });
 
 var ClassAndLevelList = React.createClass({displayName: "ClassAndLevelList",
+  handelClick: function(e) {
+    this.props.removeClassLevel({class_level: e.target.getAttribute('value')})
+  },
   render: function() {
     return (
-      React.createElement("li", null, "Took a level in ", this.props.title, " at character level ", this.props.level)
+      React.createElement("div", null, 
+        React.createElement("li", null, "Took a level in ", this.props.title, " at character level ", this.props.level), 
+        React.createElement("a", {href: "#", onClick: this.handelClick, value: this.props.id}, "Remove")
+      )
     );
   }
 });
@@ -222,10 +246,11 @@ var AddClassesForm = React.createClass({displayName: "AddClassesForm",
           id: cclass.id, 
           class_id: cclass.game_class_id, 
           title: cclass.gclass_title, 
-          level: cclass.character_level}
+          level: cclass.character_level, 
+          removeClassLevel: this.props.removeClassLevel}
         )
       );
-    })
+    }, this)
 
     var optionNodes = this.props.avaliable_classes.map(function (gclass) {
       return (
@@ -299,20 +324,10 @@ var BaseStatsForm = React.createClass({displayName: "BaseStatsForm",
   }
 });
 
-var RaceInfo = React.createClass({displayName: "RaceInfo",
-  render: function() {
-    return (
-      React.createElement("div", {className: "race_info"}, 
-        this.props.description
-      )
-    );
-  }
-});
-
-
 var SubRaceList = React.createClass({displayName: "SubRaceList",
   handelClick: function(e) {
     this.props.updateCharacterLocal("race", e.target.value);
+    this.props.updateCharacterServer();
   },
   render: function() {
     return (
@@ -332,11 +347,8 @@ var RaceList = React.createClass({displayName: "RaceList",
           React.createElement(SubRaceList, {
             title: sub.title, 
             description: sub.description, 
-            updateCharacterLocal: this.props.updateCharacterLocal}
-          ), 
-          React.createElement(RaceInfo, {
-            title: sub.title, 
-            description: sub.description}
+            updateCharacterLocal: this.props.updateCharacterLocal, 
+            updateCharacterServer: this.props.updateCharacterServer}
           )
         )
       );
@@ -379,27 +391,28 @@ var RacesForm = React.createClass({displayName: "RacesForm",
   render: function() {
     var raceNodes = this.props.races.map(function (race) {
       return (
-        React.createElement("div", null, 
         React.createElement(RaceList, {
           title: race.title, 
           description: race.description, 
           sub_races: race.sub, 
           updateCharacterLocal: this.props.updateCharacterLocal, 
-          updateCharacterGlobal: this.props.updateCharacterGlobal}
-        ), 
-        React.createElement(RaceInfo, {
-          title: race.title, 
-          description: race.description}
+          updateCharacterServer: this.props.updateCharacterServer}
         )
-        )
-
       );
     }, this )
 
     return (
       React.createElement("div", {id: "race_form", className: "popup_form"}, 
         React.createElement("input", {name: "close_and_submit", type: "submit", onClick: this.handelClick}), 
-        raceNodes
+        React.createElement("div", {className: "pct50"}, 
+          raceNodes
+        ), 
+        React.createElement("div", {className: "pct50"}, 
+          React.createElement("h2", null, this.props.character.race_info.race.title), 
+          this.props.character.race_info.race.description, 
+          React.createElement("h2", null, this.props.character.race_info.subrace.title), 
+          this.props.character.race_info.subrace.description
+        )
       )
     );
   }
