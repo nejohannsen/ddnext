@@ -7,8 +7,9 @@ class Character < ActiveRecord::Base
     self.set_race_info if self.race_changed?
   end
 
-  store :race_info
+  before_create :set_race_info
 
+  store :race_info
 
   def self.get_level(amount, type)
     levels = {1 => (0..299), 2 => (300..899), 3 => (900..2699),
@@ -62,15 +63,25 @@ class Character < ActiveRecord::Base
   end
 
   def set_race_info
-    subrace = Subrace.find_by_title(self.race)
-    race = subrace.race
-    race_info = {
-      race: {
-        title: race.title, description: race.description},
-      subrace: {
-        title: subrace.title, description: subrace.description}
-    }
-    self.race_info = race_info
+    if self.race.nil?
+      race_info = {
+        race: {
+          title: " ", description: " "},
+        subrace: {
+          title: " ", description: " "}
+      }
+
+    else
+      subrace = Subrace.find_by_title(self.race)
+      race = subrace.race
+      race_info = {
+        race: {
+          title: race.title, description: race.description},
+        subrace: {
+          title: subrace.title, description: subrace.description}
+      }
+    end
+      self.race_info = race_info
   end
 
   def remove_class_level(class_level)
