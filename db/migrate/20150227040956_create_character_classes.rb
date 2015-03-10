@@ -4,6 +4,7 @@ class CreateCharacterClasses < ActiveRecord::Migration
       t.references :character, index: true
       t.references :game_class, index: true
       t.integer :character_level
+      t.string :gclass_title
 
       t.timestamps
     end

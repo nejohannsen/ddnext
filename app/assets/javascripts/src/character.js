@@ -186,7 +186,7 @@ var RightTitleBox = React.createClass({
           <div value="base_stats" className="label">Alignment</div>
         </div>
         <div value="base_stats" onClick={this.handlePopupForm} className="field">
-          <div value="base_stats" className="value">2700</div>
+          <div value="base_stats" className="value">{this.props.character.experince_points}</div>
           <div value="base_stats" className="label">Experince</div>
         </div>
         <div value="base_stats" onClick={this.handlePopupForm} className="field">
@@ -297,9 +297,13 @@ var BaseStatsForm = React.createClass({
           <label name='player'>Player Name</label>
           <input name='player' type='text' value={this.props.character.player} onChange={this.handelChange} />
           <br />
-          <label name='dci'>DCI Number(Broken)</label>
+          <label name='dci'>DCI Number</label>
           <input name='dci' type='text' value={this.props.character.dci} onChange={this.handelChange} />
           <br />
+          <label name='experince_points'>Experince</label>
+          <input name='experince_points' type='text' value={this.props.character.experince_points} onChange={this.handelChange} />
+          <br />
+
           <label name='alignment'>Alignment</label>
           <select name='alignment' type='text' value={this.props.character.alignment} onChange={this.handelChange}>
             <option value="Lawfull Good">Lawfull Good</option>
@@ -310,7 +314,7 @@ var BaseStatsForm = React.createClass({
             <option value="Chaotic Neutral">Chaotic Neutral</option>
           </select>
           <br />
-          <label name='faction'>Faction (Broken)</label>
+          <label name='faction'>Faction</label>
           <select name='faction' value={this.props.character.faction} onChange={this.handelChange}>
             <option value="Harpers">Harpers</option>
             <option value="Order of the Gauntlet">Order of the Gauntlet</option>
