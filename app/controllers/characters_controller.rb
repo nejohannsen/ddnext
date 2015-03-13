@@ -70,7 +70,7 @@ class CharactersController < ApplicationController
 
     #Adjust the object in the model. Need to make sure I have updated info
     char = Character.find(char)
-    cclasses = char.character_classes
+    cclasses = char.character_classes.order('character_level')
 
     @responce = {character: char, character_classes: cclasses}
     respond_to do |format|
