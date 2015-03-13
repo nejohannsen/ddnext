@@ -93,7 +93,6 @@ class Character < ActiveRecord::Base
     class_level = CharacterClass.find(class_level)
     character_level = class_level.character_level
     class_levels.drop(character_level).each do |cclass|
-      debugger
       cclass.character_level += -1
       cclass.save
     end

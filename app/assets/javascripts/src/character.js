@@ -199,13 +199,29 @@ var RightTitleBox = React.createClass({
   }
 });
 
-var MainPage = React.createClass({
+var Abilities = React.createClass({
   render: function() {
     return (
-      <div className="main_page"></div>
+      <div className="abilities">
+        Coming Soon
+      </div>
     );
   }
 });
+
+var MainPage = React.createClass({
+  render: function() {
+    return (
+      <div className="main_page">
+        <div className="column">
+          <Abilities />
+        </div>
+      </div>
+    );
+  }
+});
+
+
 
 var ClassOptions = React.createClass({
   handleSubmit: function(e) {

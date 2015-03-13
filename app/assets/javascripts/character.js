@@ -199,13 +199,29 @@ var RightTitleBox = React.createClass({displayName: "RightTitleBox",
   }
 });
 
-var MainPage = React.createClass({displayName: "MainPage",
+var Abilities = React.createClass({displayName: "Abilities",
   render: function() {
     return (
-      React.createElement("div", {className: "main_page"})
+      React.createElement("div", {className: "abilities"}, 
+        "Coming Soon"
+      )
     );
   }
 });
+
+var MainPage = React.createClass({displayName: "MainPage",
+  render: function() {
+    return (
+      React.createElement("div", {className: "main_page"}, 
+        React.createElement("div", {className: "column"}, 
+          React.createElement(Abilities, null)
+        )
+      )
+    );
+  }
+});
+
+
 
 var ClassOptions = React.createClass({displayName: "ClassOptions",
   handleSubmit: function(e) {
