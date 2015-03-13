@@ -10,7 +10,10 @@ class CreateCharacters < ActiveRecord::Migration
       t.string :background
       t.string :race
       t.string :alignment
+      #Level Stuff
       t.integer :experince_points, default: 0
+      t.integer :character_level, default: 0
+      t.string :hit_dice
       #ability scores
       t.integer :ability_str, default: 8
       t.integer :ability_dex, default: 8
@@ -47,7 +50,7 @@ class CreateCharacters < ActiveRecord::Migration
       t.integer :hit_points, default: -1
       t.integer :current_hit_points, default: -1
       t.integer :temp_hit_points, default: -1
-      t.string :hit_dice, default: -1
+      
       t.integer :death_save_successes, default: -1
       t.integer :death_save_failures, default: -1
       t.integer :armor_class, default: -1
