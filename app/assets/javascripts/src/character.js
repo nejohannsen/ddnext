@@ -285,7 +285,7 @@ var AddClassesForm = React.createClass({
         <div className='pct70'>
           { (this.props.character.level > this.props.character_classes.length) ? (
             {optionNodes}
-          ) : (
+         ) : (
             <h2>Can not level until you up your experince</h2>
           )}
         </div>

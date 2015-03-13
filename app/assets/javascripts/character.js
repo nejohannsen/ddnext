@@ -285,7 +285,7 @@ var AddClassesForm = React.createClass({displayName: "AddClassesForm",
         React.createElement("div", {className: "pct70"}, 
            (this.props.character.level > this.props.character_classes.length) ? (
             {optionNodes}
-          ) : (
+         ) : (
             React.createElement("h2", null, "Can not level until you up your experince")
           )
         ), 
