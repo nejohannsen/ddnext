@@ -5,6 +5,7 @@ class Character < ActiveRecord::Base
 
   before_save do
     self.set_race_info if self.race_changed?
+    self.set_level if self.experince_points_changed?
   end
 
   before_create :set_race_info
@@ -62,15 +63,18 @@ class Character < ActiveRecord::Base
     return 10 + skill_value
   end
 
+  def set_level
+    self.level = Character.get_level(self.experince_points, "exp")
+  end
+
   def set_race_info
-    if self.race.nil?
+    if self.race.blank?
       race_info = {
         race: {
           title: " ", description: " "},
         subrace: {
           title: " ", description: " "}
       }
-
     else
       subrace = Subrace.find_by_title(self.race)
       race = subrace.race
@@ -111,9 +115,4 @@ class Character < ActiveRecord::Base
     end
     character.update_attribute('classes_and_levels', string)
   end
-  
-  
-
-
-
 end

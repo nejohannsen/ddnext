@@ -88,6 +88,7 @@ var FullPage = React.createClass({displayName: "FullPage",
 
         this.state.form_visable["class_and_level"] ? (
           React.createElement(AddClassesForm, {
+            character: this.state.character, 
             addClassToCharacter: this.addClassToCharacter, 
             avaliable_classes: this.state.avaliable_classes, 
             character_classes: this.state.character_classes, 
@@ -266,7 +267,11 @@ var AddClassesForm = React.createClass({displayName: "AddClassesForm",
       React.createElement("div", {id: "class_and_level", className: "popup_form"}, 
         React.createElement("input", {type: "submit", value: "done", onClick: this.handelClick}), 
         React.createElement("div", {className: "pct70"}, 
-          optionNodes
+           (this.props.character.level > this.props.character_classes.length) ? (
+            {optionNodes}
+          ) : (
+            React.createElement("h2", null, "Can not level until you up your experince")
+          )
         ), 
         React.createElement("div", {className: "pct30"}, 
           React.createElement("ul", null, 

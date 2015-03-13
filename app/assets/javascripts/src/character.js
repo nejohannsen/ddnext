@@ -88,6 +88,7 @@ var FullPage = React.createClass({
 
         {this.state.form_visable["class_and_level"] ? (
           <AddClassesForm 
+            character={this.state.character}
             addClassToCharacter={this.addClassToCharacter} 
             avaliable_classes={this.state.avaliable_classes} 
             character_classes={this.state.character_classes} 
@@ -266,7 +267,11 @@ var AddClassesForm = React.createClass({
       <div id="class_and_level" className='popup_form'>
         <input type='submit' value='done' onClick={this.handelClick} />
         <div className='pct70'>
-          {optionNodes}
+          { (this.props.character.level > this.props.character_classes.length) ? (
+            {optionNodes}
+          ) : (
+            <h2>Can not level until you up your experince</h2>
+          )}
         </div>
         <div className='pct30'>
           <ul>

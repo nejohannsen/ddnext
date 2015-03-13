@@ -4,16 +4,21 @@ class CreateCharacters < ActiveRecord::Migration
 
       t.timestamps
       t.string :name
+      #Player Info
       t.string :player
-      t.integer :level, default: 0
+      t.string :dci
       #class will be a relationship to allow for level per class
+      #Base info
       t.string :background
       t.string :race
       t.string :alignment
+      t.string :faction
+      t.text :race_info
       #Level Stuff
       t.integer :experince_points, default: 0
-      t.integer :character_level, default: 0
+      t.integer :level, default: 1
       t.string :hit_dice
+      t.string :classes_and_levels
       #ability scores
       t.integer :ability_str, default: 8
       t.integer :ability_dex, default: 8
@@ -50,7 +55,6 @@ class CreateCharacters < ActiveRecord::Migration
       t.integer :hit_points, default: -1
       t.integer :current_hit_points, default: -1
       t.integer :temp_hit_points, default: -1
-      
       t.integer :death_save_successes, default: -1
       t.integer :death_save_failures, default: -1
       t.integer :armor_class, default: -1
@@ -63,12 +67,6 @@ class CreateCharacters < ActiveRecord::Migration
       t.text :ideals
       t.text :bonds
       t.text :flaws
-
-      t.string :faction
-      t.string :dci
-      t.text :race_info
-
-      t.string :classes_and_level
     end
   end
 end
