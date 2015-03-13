@@ -283,7 +283,7 @@ var AddClassesForm = React.createClass({
       <div id="class_and_level" className='popup_form'>
         <input type='submit' value='done' onClick={this.handelClick} />
         <div className='pct70'>
-          { (this.props.character.level > this.props.character_classes.length) ? ({optionNodes}) : (<h2>Can not level until you up your experince</h2>)}
+          { (this.props.character.level > this.props.character_classes.length) ? (optionNodes) : (<h2>Can not level until you up your experince</h2>)}
         </div>
         <div className='pct30'>
           <ul>
