@@ -283,11 +283,7 @@ var AddClassesForm = React.createClass({displayName: "AddClassesForm",
       React.createElement("div", {id: "class_and_level", className: "popup_form"}, 
         React.createElement("input", {type: "submit", value: "done", onClick: this.handelClick}), 
         React.createElement("div", {className: "pct70"}, 
-           (this.props.character.level > this.props.character_classes.length) ? (
-            {optionNodes}
-         ) : (
-            React.createElement("h2", null, "Can not level until you up your experince")
-          )
+           (this.props.character.level > this.props.character_classes.length) ? ({optionNodes}) : (React.createElement("h2", null, "Can not level until you up your experince"))
         ), 
         React.createElement("div", {className: "pct30"}, 
           React.createElement("ul", null, 
