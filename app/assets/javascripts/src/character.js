@@ -5,11 +5,13 @@ var FullPage = React.createClass({
       races: this.props.races,
       character: this.props.character,
       avaliable_classes: this.props.avaliable_classes,
-      character_classes: this.props.character_classes,
       form_visable: {class_and_level: false, base_stats: false, races:false}
     };
   },
-  addClassToCharacter: function(gclass) {
+  addClassToCharacter: function(title) {
+    cclass = this.state.character.character_classes
+    cclass.push({'title': title})
+    this.updateCharacterLocal("character_classes", cclass)
     $.ajax({
       url: this.props.url,
       dataType: 'json',
@@ -17,7 +19,6 @@ var FullPage = React.createClass({
       data: gclass,
       success: function(data) {
         this.setState({character: data["character"]});
-        this.setState({character_classes: data["character_classes"]});
       }.bind(this),
       error: function(xhr, status, err) {
         /*console.error(this.props.url, status, err.toString());*/
@@ -53,7 +54,7 @@ var FullPage = React.createClass({
       url: this.props.url,
       dataType: 'json',
       success: function(data) {
-        this.setState({character: data.character, characeter_classes: data.character_classes});
+        this.setState({character: data.character});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -68,7 +69,7 @@ var FullPage = React.createClass({
       type: 'PATCH',
       data: class_level,
       success: function(data) {
-        this.setState({character: data["character"], character_classes: data["character_classes"]});
+        this.setState({character: data["character"]});
       }.bind(this),
       error: function(xhr, status, err) {
        /* console.error(this.props.url, status, err.toString());*/
@@ -91,7 +92,6 @@ var FullPage = React.createClass({
             character={this.state.character}
             addClassToCharacter={this.addClassToCharacter} 
             avaliable_classes={this.state.avaliable_classes} 
-            character_classes={this.state.character_classes} 
             changeStateOfPopupForm={this.changeStateOfPopupForm}
             removeClassLevel={this.removeClassLevel}
 
@@ -230,7 +230,7 @@ var ClassOptions = React.createClass({
   },
   render: function() {
     return (
-      <form className="addClassForm" onSubmit={this.handleSubmit} value={this.props.id} >
+      <form className="addClassForm" onSubmit={this.handleSubmit} value={this.props.title} >
         <h2>{this.props.title}</h2>
         <input type="submit" value="Add" />
       </form>
@@ -240,13 +240,14 @@ var ClassOptions = React.createClass({
 
 var ClassAndLevelList = React.createClass({
   handelClick: function(e) {
+    e.preventDefault();
     this.props.removeClassLevel({class_level: e.target.getAttribute('value')})
   },
   render: function() {
     return (
       <div>
         <li>Took a level in {this.props.title} at character level {this.props.level}</li>
-        <a href="#" onClick={this.handelClick} value={this.props.id}>Remove</a>
+        <a href="" onClick={this.handelClick} value={this.props.id}>Remove</a>
       </div>
     );
   }
@@ -257,18 +258,16 @@ var AddClassesForm = React.createClass({
     this.props.changeStateOfPopupForm('class_and_level')
   },
   render: function() {
-    var characterClassNodes = this.props.character_classes.map(function (cclass) {
-      return (
-        <ClassAndLevelList 
-          id={cclass.id} 
-          class_id={cclass.game_class_id} 
-          title={cclass.gclass_title} 
-          level={cclass.character_level} 
-          removeClassLevel={this.props.removeClassLevel}
-        />
-      );
-    }, this)
-
+      var characterClassNodes = this.props.character.character_classes.map(function (cclass) {
+        return (
+          <ClassAndLevelList 
+            id={cclass.id} 
+            title={cclass.title} 
+            level={cclass.character_level} 
+            removeClassLevel={this.props.removeClassLevel}
+          />
+        );
+      }, this)
     var optionNodes = this.props.avaliable_classes.map(function (gclass) {
       return (
         <ClassOptions 
@@ -283,7 +282,7 @@ var AddClassesForm = React.createClass({
       <div id="class_and_level" className='popup_form'>
         <input type='submit' value='done' onClick={this.handelClick} />
         <div className='pct70'>
-          { (this.props.character.level > this.props.character_classes.length) ? (optionNodes) : (<h2>Can not level until you up your experince</h2>)}
+          { (this.props.character.level > this.props.character.character_classes.length) ? (optionNodes) : (<h2>Can not level until you up your experince</h2>)}
         </div>
         <div className='pct30'>
           <ul>
@@ -392,7 +391,6 @@ var RacesForm = React.createClass({
       races: this.props.races,
       character: this.props.character,
       avaliable_classes: this.props.avaliable_classes,
-      character_classes: this.props.character_classes,
       form_visable: {class_and_level: false, base_stats: false, races:false}
     };
   },
@@ -445,7 +443,6 @@ $( document ).ready(function() {
     <FullPage 
       character={baked.character} 
       avaliable_classes={baked.avaliable_classes} 
-      character_classes={baked.character_classes}
       races={baked.races}
       url={baked.url}
     />,

@@ -1,4 +1,5 @@
 #page
+  =debugger
 
 - content_for :page_javascript do
   = javascript_include_tag (asset_path("character.js"))
@@ -8,7 +9,7 @@
     var baked = {
       character: #{@character.to_json},
       avaliable_classes: #{@avaliable_classes.to_json},
-      character_classes: #{@character_classes.to_json},
       races: #{@races.to_json},
-      url: "#{ENV['ROOT']}/characters/#{@character.id}"
+      url: "#{ENV['ROOT']}/characters/#{params[:id]}"
     }
+

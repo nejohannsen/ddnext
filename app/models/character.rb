@@ -1,16 +1,79 @@
-class Character < ActiveRecord::Base
+class Character
+  include Mongoid::Document
+  include Mongoid::Timestamps
   
-  has_many :character_classes, after_add: :set_classes_and_levels, after_remove: :set_classes_and_levels
-  has_many :game_classes, through: :character_classes
+  embeds_many :character_classes, after_add: :set_classes_and_levels, after_remove: :set_classes_and_levels
 
   before_save do
     self.set_race_info if self.race_changed?
     self.set_level if self.experince_points_changed?
   end
 
-  before_create :set_race_info
+  before_create do
+    self.set_race_info
+  end
 
-  store :race_info
+     field :name
+     field :player
+     field :dci
+     field :background
+     field :race
+     field :alignment
+     field :faction
+     field :race_info
+     field :experince_points, default: 0
+     field :level, default: 1
+     field :hit_dice
+     field :classes_and_levels
+     field :ability_str, default: 8
+     field :ability_dex, default: 8
+     field :ability_con, default: 8
+     field :ability_int, default: 8
+     field :ability_wis, default: 8
+     field :ability_cha, default: 8
+     field :saving_str, default: -1
+     field :saving_dex, default: -1
+     field :saving_con, default: -1
+     field :saving_int, default: -1
+     field :saving_wis, default: -1
+     field :saving_cha, default: -1
+     field :skill_acrobatics, default: -1
+     field :skill_animal_handling, default: -1
+     field :skill_arcana, default: -1
+     field :skill_athletics, default: -1
+     field :skill_deception, default: -1
+     field :skill_history, default: -1
+     field :skill_insight, default: -1
+     field :skill_intimidation, default: -1
+     field :skill_investigation, default: -1
+     field :skill_medicine, default: -1
+     field :skill_nature, default: -1
+     field :skill_percepion, default: -1
+     field :skill_performance, default: -1
+     field :skill_persuasion, default: -1
+     field :skill_religion, default: -1
+     field :skill_sleight_of_hand, default: -1
+     field :skill_stealth, default: -1
+     field :skill_survival, default: -1
+     field :hit_points
+     field :current_hit_points
+     field :temp_hit_points
+     field :death_save_successes, default: -1
+     field :death_save_failures, default: -1
+     field :armor_class, default: 9
+     field :initative, default: -1
+     field :speed, default: 30
+     field :proficiency_bonus, default: 2
+     field :personality_traits
+     field :ideals
+     field :bonds, default: ''
+     field :flaws
+
+  def add_empty_array
+    self.character_classes.create()
+    self.character_classes.first.destroy
+    self.save!
+  end
 
   def self.get_level(amount, type)
     levels = {1 => (0..299), 2 => (300..899), 3 => (900..2699),
@@ -24,7 +87,7 @@ class Character < ActiveRecord::Base
       responce = levels[amount].first
     else
       levels.each do |key,value|
-        responce = key.to_i if value === (amount)
+        responce = key.to_i if value === (amount.to_i)
       end
     end
     return responce
@@ -103,15 +166,14 @@ class Character < ActiveRecord::Base
   private
 
   def set_classes_and_levels(character_class)
-    character = character_class.character
     simple_hash = {}
-    character.character_classes.each do |cc|
-      simple_hash[cc.game_class.title] = simple_hash[cc.game_class.title].nil? ? 1 : simple_hash[cc.game_class.title] += 1
+    self.character_classes.each do |cc|
+      simple_hash[cc.title] = simple_hash[cc.title].nil? ? 1 : simple_hash[cc.title] += 1
     end
-    string = "(#{character.character_classes.count}) "
+    string = "(#{self.character_classes.count}) "
     simple_hash.each_with_index do |(key,value), index|
       string += (index != 1) ? "#{key} #{value}" : " / #{key} #{value}"
     end
-    character.update_attribute('classes_and_levels', string)
+    self.update_attribute('classes_and_levels', string)
   end
 end
