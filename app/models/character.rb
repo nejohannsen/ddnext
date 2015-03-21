@@ -1,73 +1,74 @@
 class Character
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  
-  embeds_many :character_classes, after_add: :set_classes_and_levels, after_remove: :set_classes_and_levels
+  include MongoMapper::Document
+
+  many :character_classes
 
   before_save do
     self.set_race_info if self.race_changed?
     self.set_level if self.experince_points_changed?
+    self.set_classes_and_levels
   end
 
   before_create do
     self.set_race_info
   end
 
-     field :name
-     field :player
-     field :dci
-     field :background
-     field :race
-     field :alignment
-     field :faction
-     field :race_info
-     field :experince_points, default: 0
-     field :level, default: 1
-     field :hit_dice
-     field :classes_and_levels
-     field :ability_str, default: 8
-     field :ability_dex, default: 8
-     field :ability_con, default: 8
-     field :ability_int, default: 8
-     field :ability_wis, default: 8
-     field :ability_cha, default: 8
-     field :saving_str, default: -1
-     field :saving_dex, default: -1
-     field :saving_con, default: -1
-     field :saving_int, default: -1
-     field :saving_wis, default: -1
-     field :saving_cha, default: -1
-     field :skill_acrobatics, default: -1
-     field :skill_animal_handling, default: -1
-     field :skill_arcana, default: -1
-     field :skill_athletics, default: -1
-     field :skill_deception, default: -1
-     field :skill_history, default: -1
-     field :skill_insight, default: -1
-     field :skill_intimidation, default: -1
-     field :skill_investigation, default: -1
-     field :skill_medicine, default: -1
-     field :skill_nature, default: -1
-     field :skill_percepion, default: -1
-     field :skill_performance, default: -1
-     field :skill_persuasion, default: -1
-     field :skill_religion, default: -1
-     field :skill_sleight_of_hand, default: -1
-     field :skill_stealth, default: -1
-     field :skill_survival, default: -1
-     field :hit_points
-     field :current_hit_points
-     field :temp_hit_points
-     field :death_save_successes, default: -1
-     field :death_save_failures, default: -1
-     field :armor_class, default: 9
-     field :initative, default: -1
-     field :speed, default: 30
-     field :proficiency_bonus, default: 2
-     field :personality_traits
-     field :ideals
-     field :bonds, default: ''
-     field :flaws
+  timestamps!
+  key :name
+  key :player
+  key :dci
+  key :background
+  key :race
+  key :alignment
+  key :faction
+  key :race_info
+  key :experince_points, default: 0
+  key :level, default: 1
+  key :hit_dice
+  key :classes_and_levels
+  key :ability_str, default: 8
+  key :ability_dex, default: 8
+  key :ability_con, default: 8
+  key :ability_int, default: 8
+  key :ability_wis, default: 8
+  key :ability_cha, default: 8
+  key :saving_str, default: -1
+  key :saving_dex, default: -1
+  key :saving_con, default: -1
+  key :saving_int, default: -1
+  key :saving_wis, default: -1
+  key :saving_cha, default: -1
+  key :skill_acrobatics, default: -1
+  key :skill_animal_handling, default: -1
+  key :skill_arcana, default: -1
+  key :skill_athletics, default: -1
+  key :skill_deception, default: -1
+  key :skill_history, default: -1
+  key :skill_insight, default: -1
+  key :skill_intimidation, default: -1
+  key :skill_investigation, default: -1
+  key :skill_medicine, default: -1
+  key :skill_nature, default: -1
+  key :skill_percepion, default: -1
+  key :skill_performance, default: -1
+  key :skill_persuasion, default: -1
+  key :skill_religion, default: -1
+  key :skill_sleight_of_hand, default: -1
+  key :skill_stealth, default: -1
+  key :skill_survival, default: -1
+  key :hit_points
+  key :current_hit_points
+  key :temp_hit_points
+  key :death_save_successes, default: -1
+  key :death_save_failures, default: -1
+  key :armor_class, default: 9
+  key :initative, default: -1
+  key :speed, default: 30
+  key :proficiency_bonus, default: 2
+  key :personality_traits
+  key :ideals
+  key :bonds, default: ''
+  key :flaws
 
   def add_empty_array
     self.character_classes.create()
@@ -151,21 +152,20 @@ class Character
       self.race_info = race_info
   end
 
-  def remove_class_level(class_level)
-    class_levels = self.character_classes.order('character_level')
-    class_level = CharacterClass.find(class_level)
-    character_level = class_level.character_level
-    class_levels.drop(character_level).each do |cclass|
-      cclass.character_level += -1
+  def remove_class_level(level)
+    self.character_classes.delete_if {|cclass| cclass.level == level.to_i}
+    self.character_classes.drop(level.to_i - 1).each do |cclass|
+      cclass.level += -1
       cclass.save
     end
-    self.character_classes.delete(class_level)
-    class_level.destroy
+
+    if self.save
+      return true
+    else
+      return false
+    end
   end
-
-  private
-
-  def set_classes_and_levels(character_class)
+  def set_classes_and_levels
     simple_hash = {}
     self.character_classes.each do |cc|
       simple_hash[cc.title] = simple_hash[cc.title].nil? ? 1 : simple_hash[cc.title] += 1
@@ -174,6 +174,9 @@ class Character
     simple_hash.each_with_index do |(key,value), index|
       string += (index != 1) ? "#{key} #{value}" : " / #{key} #{value}"
     end
-    self.update_attribute('classes_and_levels', string)
+    self.classes_and_levels = string
   end
+
+  private
+
 end

@@ -13,15 +13,15 @@ var FullPage = React.createClass({
     cclass.push({'title': title})
     this.updateCharacterLocal("character_classes", cclass)
     $.ajax({
-      url: this.props.url,
+      url: this.props.url + "/add_class_level",
       dataType: 'json',
       type: 'PATCH',
-      data: gclass,
+      data: title,
       success: function(data) {
         this.setState({character: data["character"]});
       }.bind(this),
       error: function(xhr, status, err) {
-        /*console.error(this.props.url, status, err.toString());*/
+       /* console.error(this.props.url, status, err.toString());*/
       }.bind(this)
     });
   },
@@ -61,13 +61,13 @@ var FullPage = React.createClass({
       }.bind(this)
     });
   },
-  removeClassLevel: function(class_level) {
+  removeClassLevel: function(level) {
     url = this.props.url + '/remove_class_level'
     $.ajax({
       url: url,
       dataType: 'json',
       type: 'PATCH',
-      data: class_level,
+      data: level,
       success: function(data) {
         this.setState({character: data["character"]});
       }.bind(this),
@@ -226,7 +226,7 @@ var MainPage = React.createClass({
 var ClassOptions = React.createClass({
   handleSubmit: function(e) {
     e.preventDefault();
-    this.props.addClassToCharacter({character_class: {game_class: e.target.getAttribute('value') }});
+    this.props.addClassToCharacter({title: e.target.getAttribute('value') });
   },
   render: function() {
     return (
@@ -241,13 +241,13 @@ var ClassOptions = React.createClass({
 var ClassAndLevelList = React.createClass({
   handelClick: function(e) {
     e.preventDefault();
-    this.props.removeClassLevel({class_level: e.target.getAttribute('value')})
+    this.props.removeClassLevel({level: e.target.getAttribute('value')})
   },
   render: function() {
     return (
       <div>
         <li>Took a level in {this.props.title} at character level {this.props.level}</li>
-        <a href="" onClick={this.handelClick} value={this.props.id}>Remove</a>
+        <a href="" onClick={this.handelClick} value={this.props.level}>Remove</a>
       </div>
     );
   }
@@ -263,7 +263,7 @@ var AddClassesForm = React.createClass({
           <ClassAndLevelList 
             id={cclass.id} 
             title={cclass.title} 
-            level={cclass.character_level} 
+            level={cclass.level} 
             removeClassLevel={this.props.removeClassLevel}
           />
         );

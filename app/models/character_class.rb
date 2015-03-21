@@ -1,24 +1,24 @@
 class CharacterClass
-  include Mongoid::Document
+  include MongoMapper::EmbeddedDocument
 
-  before_save :set_character_level
   embedded_in :character
 
+  before_save :set_character_level
 
-  field :title
-  field :character_level
+  key :title
+  key :level
 
   validates :character, presence: true
 
   def set_character_level
-    if self.character_level.nil?
+    if self.level.nil?
       num_of_entries = self.character.character_classes.count
-      write_attribute(:character_level, num_of_entries)
+      write_attribute(:level, num_of_entries)
     end
   end
 
   def allowed_levels
-    errors.add :character_level, "You need more experince" if (self.character.character_classes.count >= (Character.get_level(self.character.experince_points, 'exp')))
+    errors.add :level, "You need more experince" if (self.character.character_classes.count >= (Character.get_level(self.character.experince_points, 'exp')))
   end
 
 

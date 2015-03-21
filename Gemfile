@@ -6,7 +6,8 @@ gem 'rails', '4.0.0'
 gem 'rails_12factor'
 
 # Use sqlite3 as the database for Active Record
-gem 'mongoid'
+gem 'mongo_mapper'
+gem 'bson_ext'
 gem 'simple_form'
 gem 'byebug'
 

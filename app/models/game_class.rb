@@ -1,6 +1,6 @@
 class GameClass
-  include Mongoid::Document
-  field :title
-  field :description
+  include MongoMapper::Document
+  key :title
+  key :description
 
 end

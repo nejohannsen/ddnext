@@ -1,8 +1,8 @@
 class Subrace
-  include Mongoid::Document
+  include MongoMapper::Document
 
   belongs_to :race
 
-  field :title
-  field :description
+  key :title
+  key :description
 end
