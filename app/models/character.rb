@@ -149,7 +149,7 @@ class Character
           title: subrace.title, description: subrace.description}
       }
     end
-      self.race_info = race_info
+    self.race_info = race_info
   end
 
   def remove_class_level(level)
@@ -165,12 +165,13 @@ class Character
       return false
     end
   end
+
   def set_classes_and_levels
     simple_hash = {}
     self.character_classes.each do |cc|
       simple_hash[cc.title] = simple_hash[cc.title].nil? ? 1 : simple_hash[cc.title] += 1
     end
-    string = "(#{self.character_classes.count}) "
+    string = "(#{self.level})"
     simple_hash.each_with_index do |(key,value), index|
       string += (index != 1) ? "#{key} #{value}" : " / #{key} #{value}"
     end

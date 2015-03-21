@@ -34,7 +34,6 @@ class CharactersController < ApplicationController
   def update
     @char = Character.find(params[:id])
     respond_to do |format|
-      debugger
       if @char.update_attributes(character_params)
         @char = Character.find(params[:id])
         @responce = {character: @char}
