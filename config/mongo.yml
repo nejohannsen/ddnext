@@ -1,4 +1,5 @@
-defaults: &defaults
+development:
+  defaults: &defaults
   host: 127.0.0.1
   port: 27017
   options:
@@ -6,15 +7,18 @@ defaults: &defaults
     pool_size: 1
     slave_ok: false
     ssl: false
-
-development:
-  <<: *defaults
   database: ddnext_development
 
 test:
-  <<: *defaults
+  defaults: &defaults
+  host: 127.0.0.1
+  port: 27017
+  options:
+    w: 0
+    pool_size: 1
+    slave_ok: false
+    ssl: false
   database: ddnext_test
-  w: 0
 
 # set these environment variables on your prod server
 production:
