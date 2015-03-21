@@ -1,5 +1,4 @@
-development:
-  defaults: &defaults
+defaults: &defaults
   host: 127.0.0.1
   port: 27017
   options:
@@ -7,23 +6,21 @@ development:
     pool_size: 1
     slave_ok: false
     ssl: false
+
+development:
+  <<: *defaults
   database: ddnext_development
 
 test:
-  defaults: &defaults
-  host: 127.0.0.1
-  port: 27017
-  options:
-    w: 0
-    pool_size: 1
-    slave_ok: false
-    ssl: false
+  <<: *defaults
   database: ddnext_test
+  w: 0
 
 # set these environment variables on your prod server
 production:
   sessions:
-    uri: <%= ENV['MONGOLAB_URI'] %>
+    default:
+      uri: <%= ENV['MONGOLAB_URI'] %>
       options:
         safe: true
         skip_version_check: true
