@@ -85,7 +85,9 @@ var FullPage = React.createClass({
           character={this.state.character}
           changeStateOfPopupForm={this.changeStateOfPopupForm}
         />
-        <MainPage />
+        <MainPage
+          character={this.state.character}
+        />
 
         {this.state.form_visable["class_and_level"] ? (
           <AddClassesForm 
@@ -199,11 +201,40 @@ var RightTitleBox = React.createClass({
   }
 });
 
-var Abilities = React.createClass({
+var AbilityList = React.createClass({
   render: function() {
     return (
+      <div className="ability" >
+        <div className="title">
+          {this.props.title.toUpperCase()}
+        </div>
+        <div className="value">
+          {this.props.score}
+        </div>
+        <div className="bonus">
+          <div className="text">
+            {this.props.bonus}
+          </div>
+        </div>
+      </div>
+    );
+  }
+});
+
+var Abilities = React.createClass({
+  render: function() {
+    var abilityNodes = this.props.character.abilities.data.map(function (ability) {
+      return (
+        <AbilityList
+          title={ability.title}
+          score={ability.score}
+          bonus={ability.bonus}
+        />
+      );
+    }, this )
+    return (
       <div className="abilities">
-        Coming Soon
+        {abilityNodes}
       </div>
     );
   }
@@ -214,7 +245,11 @@ var MainPage = React.createClass({
     return (
       <div className="main_page">
         <div className="column">
-          <Abilities />
+          <div className="abilities_and_stuff">
+            <Abilities
+              character={this.props.character}
+            />
+          </div>
         </div>
       </div>
     );
@@ -436,6 +471,8 @@ var RacesForm = React.createClass({
     );
   }
 });
+
+
 
 $( document ).ready(function() {
   var url = "http://localhost:5000/characters/" + baked.character.id

@@ -11,6 +11,7 @@ class Character
 
   before_create do
     self.set_race_info
+    self.intialize_abilities
   end
 
   timestamps!
@@ -26,18 +27,7 @@ class Character
   key :level, default: 1
   key :hit_dice
   key :classes_and_levels
-  key :ability_str, default: 8
-  key :ability_dex, default: 8
-  key :ability_con, default: 8
-  key :ability_int, default: 8
-  key :ability_wis, default: 8
-  key :ability_cha, default: 8
-  key :saving_str, default: -1
-  key :saving_dex, default: -1
-  key :saving_con, default: -1
-  key :saving_int, default: -1
-  key :saving_wis, default: -1
-  key :saving_cha, default: -1
+  key :abilities
   key :skill_acrobatics, default: -1
   key :skill_animal_handling, default: -1
   key :skill_arcana, default: -1
@@ -126,6 +116,28 @@ class Character
   def self.passive_skill(skill_value)
     return 10 + skill_value
   end
+
+  def intialize_abilities
+    self.abilities = {
+      data: [
+        {title: 'str', score: 8, bonus: -1, meta: {init: 8, cost: 0, adjustments: []}},
+        {title: 'dex', score: 8, bonus: -1, meta: {init: 8, cost: 0, adjustments: []}},
+        {title: 'con', score: 8, bonus: -1, meta: {init: 8, cost: 0, adjustments: []}},
+        {title: 'int', score: 8, bonus: -1, meta: {init: 8, cost: 0, adjustments: []}},
+        {title: 'wis', score: 8, bonus: -1, meta: {init: 8, cost: 0, adjustments: []}},
+        {title: 'cha', score: 8, bonus: -1, meta: {init: 8, cost: 0, adjustments: []}}
+      ],
+      meta: {
+        style: 'Variant',
+        iniatial_points: 27,
+        point_available: 27,
+        point_costs: {:"8" => 0, :"9" => 1, :"10" => 2, :"11" => 3, :"12" => 4, :"13" => 5, :"14" => 7, :"15" => 9},
+        scores_available: [15,14,13,12,10,8],
+        scores_used: []
+      }
+    }
+  end
+
 
   def set_level
     self.level = Character.get_level(self.experince_points, "exp")

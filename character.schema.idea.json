@@ -13,6 +13,7 @@
     ]
     "faction": "Harpers",
     "race": "Human",
+    "race_info": {fill this in later },
     "aliginment": "Chaotic Good",
     "experince": "2700",
     "level": "4",
@@ -24,7 +25,7 @@
       "int": {"score": "15", "bonus": "1", "meta": {"init": "14", "cost": "#", "adjustments": [{"value": "+1", "from": "human"}]}},
       "wis": {"score": "11", "bonus": "0", "meta": {"init": "10", "cost": "#", "adjustments": [{"value": "+1", "from": "human"}]}},
       "cha": {"score": "11", "bonus": "0", "meta": {"init": "10", "cost": "#", "adjustments": [{"value": "+1", "from": "human"}]}},
-      "meta": {"style": "Point Select(Standard)", "iniatial_points": "27", "point_available": "27"}
+      "meta": {"style": "Standard / Variant ", "iniatial_points": "27", "point_available": "27", 'point_costs': {'8': '0', '9': '1','10': '2','11': '3', '12': '4', '13': '5', '14': '7', '15': '9',} 'scores_available': ["15","14","13","12","10","8"], 'scores_used': ['str': '', 'dex': '', 'con': '', 'int': '', 'wis': '', 'cha': '']}
     },
     "proficency_bonus": "2",
     "inspriation": "0",

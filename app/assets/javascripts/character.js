@@ -85,7 +85,9 @@ var FullPage = React.createClass({displayName: "FullPage",
           character: this.state.character, 
           changeStateOfPopupForm: this.changeStateOfPopupForm}
         ), 
-        React.createElement(MainPage, null), 
+        React.createElement(MainPage, {
+          character: this.state.character}
+        ), 
 
         this.state.form_visable["class_and_level"] ? (
           React.createElement(AddClassesForm, {
@@ -199,11 +201,40 @@ var RightTitleBox = React.createClass({displayName: "RightTitleBox",
   }
 });
 
-var Abilities = React.createClass({displayName: "Abilities",
+var AbilityList = React.createClass({displayName: "AbilityList",
   render: function() {
     return (
+      React.createElement("div", {className: "ability"}, 
+        React.createElement("div", {className: "title"}, 
+          this.props.title.toUpperCase()
+        ), 
+        React.createElement("div", {className: "value"}, 
+          this.props.score
+        ), 
+        React.createElement("div", {className: "bonus"}, 
+          React.createElement("div", {className: "text"}, 
+            this.props.bonus
+          )
+        )
+      )
+    );
+  }
+});
+
+var Abilities = React.createClass({displayName: "Abilities",
+  render: function() {
+    var abilityNodes = this.props.character.abilities.data.map(function (ability) {
+      return (
+        React.createElement(AbilityList, {
+          title: ability.title, 
+          score: ability.score, 
+          bonus: ability.bonus}
+        )
+      );
+    }, this )
+    return (
       React.createElement("div", {className: "abilities"}, 
-        "Coming Soon"
+        abilityNodes
       )
     );
   }
@@ -214,7 +245,11 @@ var MainPage = React.createClass({displayName: "MainPage",
     return (
       React.createElement("div", {className: "main_page"}, 
         React.createElement("div", {className: "column"}, 
-          React.createElement(Abilities, null)
+          React.createElement("div", {className: "abilities_and_stuff"}, 
+            React.createElement(Abilities, {
+              character: this.props.character}
+            )
+          )
         )
       )
     );
@@ -436,6 +471,8 @@ var RacesForm = React.createClass({displayName: "RacesForm",
     );
   }
 });
+
+
 
 $( document ).ready(function() {
   var url = "http://localhost:5000/characters/" + baked.character.id
