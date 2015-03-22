@@ -28,11 +28,17 @@ class SubracesController < ApplicationController
 
   def update
     @subrace = Subrace.find(params[:id])
-    if @subrace.update_attributes(subrace_params)
-      redirect_to @subrace, notice: "Updated Subrace"
-    else
-      flash[:alert] = "Unable to update subrace"
-      render "edit"
+    respond_to do |format|
+      if @subrace.update_attributes(subrace_params)
+        responce = {subrace: @subrace}
+        format.html {redirect_to @subrace, notice: "Updated Subrace"}
+        format.json {render json: responce, status: :created, location: responce}
+      else
+        format.html {
+          flash[:alert] = "Unable to update subrace"
+          render "edit"
+        }
+      end
     end
   end
 
@@ -46,6 +52,6 @@ class SubracesController < ApplicationController
   end
 
   def subrace_params
-    params.required(:subrace).permit(:title, :description, :race_id)
+    JSON.parse(params.required(:subrace))
   end
 end

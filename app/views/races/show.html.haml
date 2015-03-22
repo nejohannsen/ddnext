@@ -1,2 +1,12 @@
-%h1= @race.title
-%p= @race.description
+#page
+
+- content_for :page_javascript do
+  = javascript_include_tag (asset_path("race.js"))
+
+#baked_in_javascript
+  :javascript
+    var baked = {
+      race: #{@race.to_json},
+      subraces: #{@subraces.to_json},
+      url: "#{ENV['ROOT']}/races/#{params[:id]}"
+    }

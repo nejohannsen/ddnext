@@ -73,3 +73,19 @@
     "dci_number": "738459850"
   }
 }
+
+{
+  race: {
+    "title": "Human",
+    "description": "Human Description",
+    "features": {
+      "text": "String description",
+      "add_to": [
+        {"type": "points", "where": "abilities", "what": "str", "value": 1, "requirments": {"level": 1}, "notes": "+1 str for being human"},
+        {"type": "points", "where": "abilities", "what": "dex", "value": 1, "requirments": {"level": 1}, "notes": "+1 dex for being human"},
+        {"type": "text", "where": "features", "what": "senses", "value": "Keen Smell: +2 to perception for smell", "requirments": {"level": 1}, "notes": "Added Keen smell fro human"},
+      ]
+    }
+  }
+}
+

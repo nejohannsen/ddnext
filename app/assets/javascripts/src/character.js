@@ -477,7 +477,6 @@ var RacesForm = React.createClass({
 
 
 $( document ).ready(function() {
-  var url = "http://localhost:5000/characters/" + baked.character.id
   React.render(
     <FullPage 
       character={baked.character} 

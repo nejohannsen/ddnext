@@ -28,11 +28,17 @@ class RacesController < ApplicationController
 
   def update
     @race = Race.find(params[:id])
-    if @race.update_attributes(race_params)
-      redirect_to @race, notice: "Updated Race"
-    else
-      flash[:alert] = "Unable to update race"
-      render "edit"
+    respond_to do |format|
+      if @race.update_attributes(race_params)
+        responce = {race: @race}
+        format.html {redirect_to @race, notice: "Updated Race"}
+        format.json {render json: responce, status: :created, location: responce}
+      else
+        format.html {
+          flash[:alert] = "Unable to update race"
+           render "edit"
+        }
+      end
     end
   end
 
@@ -46,6 +52,6 @@ class RacesController < ApplicationController
   end
 
   def race_params
-    params.required(:race).permit(:title, :description)
+    JSON.parse(params.required(:race))
   end
 end
