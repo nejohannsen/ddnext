@@ -32,7 +32,7 @@ Ddnext::Application.configure do
   # Generate digests for assets URLs.
   config.assets.digest = true
 
-  config.assets.precompile += %w( character.js )
+  config.assets.precompile += %w( character.js race.js subrace.js)
 
   # Version of your assets, change this if you want to expire all your assets.
   config.assets.version = '1.0'
