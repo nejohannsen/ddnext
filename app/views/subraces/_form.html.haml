@@ -1,5 +1,5 @@
 = simple_form_for @subrace do |f|
-  = select("subrace", "race_id", Race.all.collect {|p| [ p.title, p.id ] })
+  = select("subrace", "race_id", Race.all.collect {|r| [ r.title, r.id ] })
   = f.input :title
   = f.input :description
   = f.submit
