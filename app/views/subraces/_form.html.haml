@@ -1,5 +1,5 @@
 = simple_form_for @subrace do |f|
-  = f.association :race
+  = select("subrace", "race_id", Race.all.collect {|p| [ p.title, p.id ] })
   = f.input :title
   = f.input :description
   = f.submit
