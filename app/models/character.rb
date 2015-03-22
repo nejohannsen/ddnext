@@ -131,7 +131,6 @@ class Character
         style: 'Variant',
         iniatial_points: 27,
         point_available: 27,
-        point_costs: {:"8" => 0, :"9" => 1, :"10" => 2, :"11" => 3, :"12" => 4, :"13" => 5, :"14" => 7, :"15" => 9},
         scores_available: [15,14,13,12,10,8],
         scores_used: []
       }

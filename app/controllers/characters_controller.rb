@@ -34,7 +34,7 @@ class CharactersController < ApplicationController
   def update
     @char = Character.find(params[:id])
     respond_to do |format|
-      if @char.update_attributes(character_params)
+      if @char.update_attributes(JSON.parse(character_params))
         @char = Character.find(params[:id])
         @responce = {character: @char}
         format.html { redirect_to @char.to_document, notice: 'Class was added to character.' }
@@ -84,6 +84,6 @@ class CharactersController < ApplicationController
   end
 
   def character_params
-    params.require(:character).except!(:character_classes).permit!
+    params.require(:character)
   end
 end

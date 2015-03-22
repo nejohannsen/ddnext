@@ -10,7 +10,7 @@ var FullPage = React.createClass({displayName: "FullPage",
   },
   addClassToCharacter: function(title) {
     cclass = this.state.character.character_classes
-    cclass.push({'title': title})
+    cclass.push({'title': title, level: cclass.length + 1})
     this.updateCharacterLocal("character_classes", cclass)
     $.ajax({
       url: this.props.url + "/add_class_level",
@@ -29,13 +29,15 @@ var FullPage = React.createClass({displayName: "FullPage",
     var character = this.state.character
     character[attr] = value
     this.setState({character: character})
+
   },
   updateCharacterServer: function(character) {
+    var jsonSendData = JSON.stringify(this.state.character)
     $.ajax({
       url: this.props.url,
       dataType: 'json',
       type: 'PATCH',
-      data: {'character': this.state.character},
+      data: {character: jsonSendData},
       success: function(data) {
         this.setState({character: data["character"]});
       }.bind(this),
@@ -282,7 +284,7 @@ var ClassAndLevelList = React.createClass({displayName: "ClassAndLevelList",
     return (
       React.createElement("div", null, 
         React.createElement("li", null, "Took a level in ", this.props.title, " at character level ", this.props.level), 
-        React.createElement("a", {href: "", onClick: this.handelClick, value: this.props.level}, "Remove")
+        React.createElement("a", {href: "", onClick: this.handelClick, value: this.props.level ? this.props.level : "0"}, "Remove")
       )
     );
   }
