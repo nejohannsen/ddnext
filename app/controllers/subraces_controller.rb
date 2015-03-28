@@ -29,7 +29,7 @@ class SubracesController < ApplicationController
   def update
     @subrace = Subrace.find(params[:id])
     respond_to do |format|
-      if @subrace.update_attributes(subrace_params)
+      if @subrace.update_attributes()
         responce = {subrace: @subrace}
         format.html {redirect_to @subrace, notice: "Updated Subrace"}
         format.json {render json: responce, status: :created, location: responce}
@@ -48,6 +48,41 @@ class SubracesController < ApplicationController
       redirect_to subrace_path(), notice: "Subrace Destoryed"
     else
       redirect_to @subrace, alert: "Unable to destory subrace"
+    end
+  end
+
+  def update_to_add_feature
+    subrace = Subrace.find(params[:id])
+    feature = subrace.to_add_features.find(subrace_params["id"])
+    feature.update_attributes(subrace_params)
+    subrace = Subrace.find(params[:id])
+    respond_to do |f|
+      responce = {subrace: subrace}
+      f.json {render json: responce, status: :created, location: responce}
+    end
+  end
+
+  def new_to_add_feature
+    subrace = Subrace.find(params[:id])
+    subrace.to_add_features << ToAddFeature.new(title: "", type: "", category: "", subcategory: "", value: "", requirements: [], notes: "")
+    subrace.save
+    subrace = Subrace.find(params[:id])
+    respond_to do |f|
+      responce = {subrace: subrace}
+      f.json {render json: responce, status: :created, location: responce}
+    end
+  end
+
+  def remove_to_add_feature
+    subrace = Subrace.find(params[:id])
+    subrace.to_add_features.delete_if do |feature|
+      feature.id.to_s == subrace_params["id"]
+    end
+    subrace.save
+    subrace = Subrace.find(params[:id])
+    respond_to do |f|
+      responce = {subrace: subrace}
+      f.json {render json: responce, status: :created, location: responce}
     end
   end
 

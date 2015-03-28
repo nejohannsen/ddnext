@@ -51,6 +51,41 @@ class RacesController < ApplicationController
     end
   end
 
+  def update_to_add_feature
+    race = Race.find(params[:id])
+    feature = race.to_add_features.find(race_params["id"])
+    feature.update_attributes(race_params)
+    race = Race.find(params[:id])
+    respond_to do |f|
+      responce = {race: race}
+      f.json {render json: responce, status: :created, location: responce}
+    end
+  end
+
+  def new_to_add_feature
+    race = Race.find(params[:id])
+    race.to_add_features << ToAddFeature.new(title: "", type: "", category: "", subcategory: "", value: "", requirements: [], notes: "")
+    race.save
+    race = Race.find(params[:id])
+    respond_to do |f|
+      responce = {race: race}
+      f.json {render json: responce, status: :created, location: responce}
+    end
+  end
+
+  def remove_to_add_feature
+    race = Race.find(params[:id])
+    race.to_add_features.delete_if do |feature|
+      feature.id.to_s == race_params["id"]
+    end
+    race.save
+    race = Race.find(params[:id])
+    respond_to do |f|
+      responce = {race: race}
+      f.json {render json: responce, status: :created, location: responce}
+    end
+  end
+
   def race_params
     JSON.parse(params.required(:race))
   end

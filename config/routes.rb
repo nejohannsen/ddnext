@@ -8,6 +8,15 @@ Ddnext::Application.routes.draw do
   patch "characters/:id/remove_class_level" => 'characters#remove_class_level'
   patch "characters/:id/add_class_level" => 'characters#add_class_level'
 
+  patch "subraces/:id/update_feature" => 'subraces#update_to_add_feature'
+  patch "races/:id/update_feature" => 'races#update_to_add_feature'
+
+  patch "subraces/:id/add_feature" => 'subraces#new_to_add_feature'
+  patch "races/:id/add_feature" => 'races#new_to_add_feature'
+
+  patch "subraces/:id/remove_feature" => 'subraces#remove_to_add_feature'
+  patch "races/:id/remove_feature" => 'races#remove_to_add_feature'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

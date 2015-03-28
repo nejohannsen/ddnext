@@ -20,7 +20,19 @@ GameClass.create([
   { title: 'Wizard', description: "Wizard Description" }
 ])
 
-dwarf = Race.create(title: 'Dwarf', description: "Dwarf Description")
+dwarf = Race.create(title: 'Dwarf', description: "Dwarf Description", to_add_features: [
+  ToAddFeature.new(title: "Ability Score Increase", type: 'Add', category: "Ability", subcategory: "Con", value: 2),
+  ToAddFeature.new(title: "Size", type: 'Set', category: "Size", subcategory: "", value: "Medium"),
+  ToAddFeature.new(title: "Speed", type: 'Set', category: "Speed", subcategory: "", value: 25),
+  ToAddFeature.new(title: "Darkvision", type: 'Feature', category: "Senses", subcategory: "", value: "Dark Vision"),
+  ToAddFeature.new(title: "Dwarven Resilience", type: 'Feature', category: "Resistence", subcategory: "Saving Throws", value: "Advatange against poison"),
+  ToAddFeature.new(title: "Dwarven Resilience", type: 'Feature', category: "Resistence", subcategory: "Damage Resistence", value: "Resistence Damage"),
+  ToAddFeature.new(title: "Dwarven Combat Training", type: 'Proficiency', category: "Weapon", subcategory: "", value: "Battleaxe"),
+  ToAddFeature.new(title: "Dwarven Combat Training", type: 'Proficiency', category: "Weapon", subcategory: "", value: "Handaxe"),
+  ToAddFeature.new(title: "Dwarven Combat Training", type: 'Proficiency', category: "Weapon", subcategory: "", value: "Throwing Hammer"),
+  ToAddFeature.new(title: "Dwarven Combat Training", type: 'Proficiency', category: "Weapon", subcategory: "", value: "Warhammer")
+])
+
 elf = Race.create(title: 'Elf', description: "Elf Description")
 halfling = Race.create(title: 'Halfling', description: "Halfling Description")
 human = Race.create(title: 'Human', description: "Human Description")
@@ -31,8 +43,17 @@ halforc = Race.create(title: 'Half-Orc', description: "Half-Orc Description")
 tiefling = Race.create(title: 'Tiefling', description: "Tiefling Description")
 
 
-dwarf.subraces.create(title: 'Hill Dwarf', description: "Hill Dwarf Description")
-dwarf.subraces.create(title: 'Hill Dwarf', description: "Hill Dwarf Description")
+dwarf.subraces.create(title: 'Hill Dwarf', description: "Hill Dwarf Description", to_add_features: [
+  ToAddFeature.new(title: "Ability Score Increase", type: 'Add', category: "Ability", subcategory: "Wis", value: 2),
+  ToAddFeature.new(title: "Dwarven Toughness", type: 'level', category: "Hit Points", subcategory: "Max Hit Points", value: 1)
+])
+
+dwarf.subraces.create(title: 'Mountain Dwarf', description: "Mountain Dwarf Description", to_add_features: [
+  ToAddFeature.new(title: "Ability Score Increase", type: 'Add', category: "Ability", subcategory: "Str", value: 2),
+  ToAddFeature.new(title: "Dwarven Armor Training", type: 'Proficiency', category: "Armor", subcategory: "", value: "Light Armor"),
+  ToAddFeature.new(title: "Dwarven Armor Training", type: 'Proficiency', category: "Armor", subcategory: "", value: "Medium Armor")
+])
+
 
 elf.subraces.create(title: 'High Elf', description: "High Elf Description")
 elf.subraces.create(title: 'Moon Elf', description: "Moon Elf Description")
