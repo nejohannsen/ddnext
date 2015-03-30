@@ -3,7 +3,7 @@
   {
     "name": "Rat",
     "classes_and_levels": "(4) Rogue 4"
-    "classes":
+    "classes"(embedded):
     [
       {"value": "rogue": "taken_at": "1"},
       {"value": "rogue": "taken_at": "2"},
@@ -17,7 +17,7 @@
     "aliginment": "Chaotic Good",
     "experince": "2700",
     "level": "4",
-    "abilities":
+    "abilities"(embedded:
     {
       "str": {"score": "14", "bonus": "1", "meta": {"init": "13", "cost": "#", "adjustments": [{"value": "+1", "from": "human"}]}},
       "dex": {"score": "16", "bonus": "2", "meta": {"init": "15", "cost": "#", "adjustments": [{"value": "+1", "from": "human"}]}},
@@ -29,12 +29,12 @@
     },
     "proficency_bonus": "2",
     "inspriation": "0",
-    "armour_class": {"value": "14", "dex": "+2", "armor": {"type": "leather", "bonus": "+2"}, "meta": {"adjustments": [{"value": "+1", "from": "whereever"}]},
-    "initative" "+2",
-    "speed": {"ground": "30", "water": "15", "Climb": "15"
-    "hit_points": "integer",
+    "armour_class"(embedded): {"value": "14", "dex": "+2", "armor": {"type": "leather", "bonus": "+2"}, "meta": {"adjustments": [{"value": "+1", "from": "whereever"}]},
+    "initative"(embedded) "+2",
+    "speed"(embeeded): {"ground": "30", "water": "15", "Climb": "15"
+    "hit_points"(embedded): "integer", #add more here like current Hit Points and Max HP
     "hit_dice": "string",
-    "saving_thows":
+    "saving_thows"(embedded):
     {
       "str": {"score": "integer", "proficient": "boolean" },
       "dex": {"score": "integer", "proficient": "boolean" },
@@ -43,15 +43,15 @@
       "wis": {"score": "integer", "proficient": "boolean" },
       "cha": {"score": "integer", "proficient": "boolean" },
     },
-    "skills":
+    "skills"(embedded):
     {
       "acrobatics":         {"score": "3", "proficient": "true" },
       "animal_handling":    {"score": "0", "proficient": "false" },
+      "passive_perception": "10",
       "meta" {"amount_of_proficitencies": "4", ...}
 
     },
-    "passive_perception": "10",
-    "phyical_attributes":
+        "phyical_attributes":
     {
       "age": "23"
       "height_in_inches": "68"

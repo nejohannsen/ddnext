@@ -2,7 +2,7 @@ class Character
   include MongoMapper::Document
 
   many :character_classes
-
+  one :abilities
   before_save do
     self.set_race_info if self.race_changed?
     self.set_level if self.experince_points_changed?
@@ -10,8 +10,13 @@ class Character
   end
 
   before_create do
-    self.set_race_info
     self.intialize_abilities
+    self.set_race_info
+  end
+
+  #because mongomapper can save relationships even embedded on before persitence
+  after_create do
+    #self.intialize_abilities
   end
 
   timestamps!
@@ -27,7 +32,6 @@ class Character
   key :level, default: 1
   key :hit_dice
   key :classes_and_levels
-  key :abilities
   key :skill_acrobatics, default: -1
   key :skill_animal_handling, default: -1
   key :skill_arcana, default: -1
@@ -68,11 +72,11 @@ class Character
 
   def self.get_level(amount, type)
     levels = {1 => (0..299), 2 => (300..899), 3 => (900..2699),
-              4 => (2700..6499), 5 => (6500..13999), 6 => (14000..22999), 
-              7 => (23000..33999), 8 => (34000..47999), 9 => (48000..63999), 
+              4 => (2700..6499), 5 => (6500..13999), 6 => (14000..22999),
+              7 => (23000..33999), 8 => (34000..47999), 9 => (48000..63999),
               10 => (64000..84999), 11 => (85000..99999), 12 => (100000..119999),
-              13 => (120000..139999), 14 => (140000..164999), 15 => (165000..194000), 
-              16 => (195000..224999), 17 => (225000..264999), 18 => (265000..304999), 
+              13 => (120000..139999), 14 => (140000..164999), 15 => (165000..194000),
+              16 => (195000..224999), 17 => (225000..264999), 18 => (265000..304999),
               19 =>(305000..354000), 20 => (355000..10000000000)}
     if type == 'level'
       responce = levels[amount].first
@@ -118,25 +122,8 @@ class Character
   end
 
   def intialize_abilities
-    self.abilities = {
-      data: [
-        {title: 'str', score: 8, bonus: -1, meta: {init: 8, cost: 0, adjustments: []}},
-        {title: 'dex', score: 8, bonus: -1, meta: {init: 8, cost: 0, adjustments: []}},
-        {title: 'con', score: 8, bonus: -1, meta: {init: 8, cost: 0, adjustments: []}},
-        {title: 'int', score: 8, bonus: -1, meta: {init: 8, cost: 0, adjustments: []}},
-        {title: 'wis', score: 8, bonus: -1, meta: {init: 8, cost: 0, adjustments: []}},
-        {title: 'cha', score: 8, bonus: -1, meta: {init: 8, cost: 0, adjustments: []}}
-      ],
-      meta: {
-        style: 'Variant',
-        iniatial_points: 27,
-        point_available: 27,
-        scores_available: [15,14,13,12,10,8],
-        scores_used: []
-      }
-    }
+    self.abilities = Abilities.new()
   end
-
 
   def set_level
     self.level = Character.get_level(self.experince_points, "exp")
