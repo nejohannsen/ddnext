@@ -52,12 +52,26 @@ class Abilities
   def set_ability_score(ability)
     points_from_adjustments = 0
     self[ability]["meta"]["adjustments"].each do |adj|
-      points_from_adjustments += adj.value
+      points_from_adjustments += adj[:value]
     end
     self[ability]["score"] = self[ability]["meta"]["init"] + points_from_adjustments
     self[ability]["bonus"] = Abilities.ability_modifier(self[ability]["score"])
     puts self[ability]
     puts self["meta"]
+  end
+
+  def add_feature(feature)
+    self[feature.subcategory.downcase]['meta']['adjustments'] << {value: feature.value, from: feature.from, title: feature.title}
+    self.set_ability_score(feature.subcategory.downcase)
+  end
+
+  def remove_feature(feature)
+    self[feature.subcategory.downcase]['meta']['adjustments'].each_with_index do |array, i|
+      if array["value"] == feature["value"] && array["from"] == feature.from && array["title"] == feature.title
+        self[feature.subcategory.downcase]['meta']['adjustments'].delete_at(i)
+      end
+    end
+    self.set_ability_score(feature.subcategory.downcase)
   end
 
 

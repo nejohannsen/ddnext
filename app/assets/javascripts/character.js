@@ -223,16 +223,20 @@ var AbilityList = React.createClass({displayName: "AbilityList",
   }
 });
 
+
+
 var Abilities = React.createClass({displayName: "Abilities",
   render: function() {
-    var abilityNodes = this.props.character.abilities.data.map(function (ability) {
-      return (
-        React.createElement(AbilityList, {
-          title: ability.title, 
-          score: ability.score, 
-          bonus: ability.bonus}
-        )
-      );
+    var abilityNodes = Object.keys(this.props.character.abilities).map(function (key, i) {
+      if (key != "meta" && key != "id") {
+        return (
+          React.createElement(AbilityList, {
+            title: key, 
+            score: this.props.character.abilities[key].score, 
+            bonus: this.props.character.abilities[key].bonus}
+          )
+        );
+      };
     }, this )
     return (
       React.createElement("div", {className: "abilities"}, 

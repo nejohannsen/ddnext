@@ -4,7 +4,13 @@ class Character
   many :character_classes
   one :abilities
   before_save do
-    self.set_race_info if self.race_changed?
+    if race_changed?
+      self.set_race_info
+      self.feature_remove_router(Subrace.find_by_title(Character.find(self.id).race)) if Character.find(self.id).race.present?
+      self.feature_remove_router(Subrace.find_by_title(Character.find(self.id).race).race) if Character.find(self.id).race.present?
+      self.feature_add_router(Subrace.find_by_title(self.race))
+      self.feature_add_router(Subrace.find_by_title(self.race).race)
+    end
     self.set_level if self.experince_points_changed?
     self.set_classes_and_levels
   end
@@ -117,6 +123,7 @@ class Character
     end
   end
 
+
   def self.passive_skill(skill_value)
     return 10 + skill_value
   end
@@ -175,6 +182,27 @@ class Character
     end
     self.classes_and_levels = string
   end
+
+  def feature_add_router(item)
+    item.to_add_features.each do |feature|
+      if feature.type.present? && feature.category.present?
+        if feature.category == "Abilities"
+          self.abilities.add_feature(feature)
+        end
+      end
+    end
+  end
+
+  def feature_remove_router(item)
+    item.to_add_features.each do |feature|
+      if feature.type.present? && feature.category.present?
+        if feature.category == "Abilities"
+          self.abilities.remove_feature(feature)
+        end
+      end
+    end
+  end
+
 
   private
 

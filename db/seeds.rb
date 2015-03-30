@@ -21,16 +21,16 @@ GameClass.create([
 ])
 
 dwarf = Race.create(title: 'Dwarf', description: "Dwarf Description", to_add_features: [
-  ToAddFeature.new(title: "Ability Score Increase", type: 'Add', category: "Ability", subcategory: "Con", value: 2),
-  ToAddFeature.new(title: "Size", type: 'Set', category: "Size", subcategory: "", value: "Medium"),
-  ToAddFeature.new(title: "Speed", type: 'Set', category: "Speed", subcategory: "", value: 25),
-  ToAddFeature.new(title: "Darkvision", type: 'Feature', category: "Senses", subcategory: "", value: "Dark Vision"),
-  ToAddFeature.new(title: "Dwarven Resilience", type: 'Feature', category: "Resistence", subcategory: "Saving Throws", value: "Advatange against poison"),
-  ToAddFeature.new(title: "Dwarven Resilience", type: 'Feature', category: "Resistence", subcategory: "Damage Resistence", value: "Resistence Damage"),
-  ToAddFeature.new(title: "Dwarven Combat Training", type: 'Proficiency', category: "Weapon", subcategory: "", value: "Battleaxe"),
-  ToAddFeature.new(title: "Dwarven Combat Training", type: 'Proficiency', category: "Weapon", subcategory: "", value: "Handaxe"),
-  ToAddFeature.new(title: "Dwarven Combat Training", type: 'Proficiency', category: "Weapon", subcategory: "", value: "Throwing Hammer"),
-  ToAddFeature.new(title: "Dwarven Combat Training", type: 'Proficiency', category: "Weapon", subcategory: "", value: "Warhammer")
+  ToAddFeature.new(title: "Ability Score Increase", type: 'Add', category: "Abilities", subcategory: "Con", value: 2, from: "race"),
+  ToAddFeature.new(title: "Size", type: 'Set', category: "Size", subcategory: "", value: "Medium", from: "race"),
+  ToAddFeature.new(title: "Speed", type: 'Set', category: "Speed", subcategory: "", value: 25, from: "race"),
+  ToAddFeature.new(title: "Darkvision", type: 'Feature', category: "Senses", subcategory: "", value: "Dark Vision", from: "race"),
+  ToAddFeature.new(title: "Dwarven Resilience", type: 'Feature', category: "Resistence", subcategory: "Saving Throws", value: "Advatange against poison", from: "race"),
+  ToAddFeature.new(title: "Dwarven Resilience", type: 'Feature', category: "Resistence", subcategory: "Damage Resistence", value: "Resistence Damage", from: "race"),
+  ToAddFeature.new(title: "Dwarven Combat Training", type: 'Proficiency', category: "Weapon", subcategory: "", value: "Battleaxe", from: "race"),
+  ToAddFeature.new(title: "Dwarven Combat Training", type: 'Proficiency', category: "Weapon", subcategory: "", value: "Handaxe", from: "race"),
+  ToAddFeature.new(title: "Dwarven Combat Training", type: 'Proficiency', category: "Weapon", subcategory: "", value: "Throwing Hammer", from: "race"),
+  ToAddFeature.new(title: "Dwarven Combat Training", type: 'Proficiency', category: "Weapon", subcategory: "", value: "Warhammer", from: "race")
 ])
 
 elf = Race.create(title: 'Elf', description: "Elf Description")
@@ -44,14 +44,14 @@ tiefling = Race.create(title: 'Tiefling', description: "Tiefling Description")
 
 
 dwarf.subraces.create(title: 'Hill Dwarf', description: "Hill Dwarf Description", to_add_features: [
-  ToAddFeature.new(title: "Ability Score Increase", type: 'Add', category: "Ability", subcategory: "Wis", value: 2),
-  ToAddFeature.new(title: "Dwarven Toughness", type: 'level', category: "Hit Points", subcategory: "Max Hit Points", value: 1)
+  ToAddFeature.new(title: "Ability Score Increase", type: 'Add', category: "Abilities", subcategory: "Wis", value: 2, from: "subrace"),
+  ToAddFeature.new(title: "Dwarven Toughness", type: 'level', category: "Hit Points", subcategory: "Max Hit Points", value: 1, from: "subrace")
 ])
 
 dwarf.subraces.create(title: 'Mountain Dwarf', description: "Mountain Dwarf Description", to_add_features: [
-  ToAddFeature.new(title: "Ability Score Increase", type: 'Add', category: "Ability", subcategory: "Str", value: 2),
-  ToAddFeature.new(title: "Dwarven Armor Training", type: 'Proficiency', category: "Armor", subcategory: "", value: "Light Armor"),
-  ToAddFeature.new(title: "Dwarven Armor Training", type: 'Proficiency', category: "Armor", subcategory: "", value: "Medium Armor")
+  ToAddFeature.new(title: "Ability Score Increase", type: 'Add', category: "Abilities", subcategory: "Str", value: 2, from: "subrace"),
+  ToAddFeature.new(title: "Dwarven Armor Training", type: 'Proficiency', category: "Armor", subcategory: "", value: "Light Armor", from: "subrace"),
+  ToAddFeature.new(title: "Dwarven Armor Training", type: 'Proficiency', category: "Armor", subcategory: "", value: "Medium Armor", from: "subrace")
 ])
 
 
