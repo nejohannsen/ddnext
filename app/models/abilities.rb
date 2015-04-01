@@ -61,17 +61,22 @@ class Abilities
   end
 
   def add_feature(feature)
-    self[feature.subcategory.downcase]['meta']['adjustments'] << {value: feature.value, from: feature.from, title: feature.title}
-    self.set_ability_score(feature.subcategory.downcase)
+    debugger
+    unless feature.subcategory.downcase == 'choose'
+      self[feature.subcategory.downcase]['meta']['adjustments'] << {value: feature.value, from: feature.from, title: feature.title}
+      self.set_ability_score(feature.subcategory.downcase)
+    end
   end
 
   def remove_feature(feature)
-    self[feature.subcategory.downcase]['meta']['adjustments'].each_with_index do |array, i|
-      if array["value"] == feature["value"] && array["from"] == feature.from && array["title"] == feature.title
-        self[feature.subcategory.downcase]['meta']['adjustments'].delete_at(i)
+    unless feature.subcategory.downcase == 'choose'
+      self[feature.subcategory.downcase]['meta']['adjustments'].each_with_index do |array, i|
+        if array["value"] == feature["value"] && array["from"] == feature.from && array["title"] == feature.title
+          self[feature.subcategory.downcase]['meta']['adjustments'].delete_at(i)
+        end
       end
+      self.set_ability_score(feature.subcategory.downcase)
     end
-    self.set_ability_score(feature.subcategory.downcase)
   end
 
 

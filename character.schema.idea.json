@@ -13,7 +13,9 @@
     ]
     "faction": "Harpers",
     "race": "Human",
-    "race_info": {fill this in later },
+    "race_info": { Embeded?
+      "race": { "title": "race.title", "description": "race.description", "choices": {"ability": "race.ability_choice"},
+      "subrace": { "title": "subrace.title", "description": "subrace.description", "choices": {"ability": "race.ability_choice"}},
     "aliginment": "Chaotic Good",
     "experince": "2700",
     "level": "4",
