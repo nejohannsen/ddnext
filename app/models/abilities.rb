@@ -52,7 +52,7 @@ class Abilities
   def set_ability_score(ability)
     points_from_adjustments = 0
     self[ability]["meta"]["adjustments"].each do |adj|
-      points_from_adjustments += adj[:value]
+      points_from_adjustments += adj[:value].nil? ? adj["value"] : adj[:value]
     end
     self[ability]["score"] = self[ability]["meta"]["init"] + points_from_adjustments
     self[ability]["bonus"] = Abilities.ability_modifier(self[ability]["score"])
@@ -61,7 +61,6 @@ class Abilities
   end
 
   def add_feature(feature)
-    debugger
     unless feature.subcategory.downcase == 'choose'
       self[feature.subcategory.downcase]['meta']['adjustments'] << {value: feature.value, from: feature.from, title: feature.title}
       self.set_ability_score(feature.subcategory.downcase)
